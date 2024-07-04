@@ -86,7 +86,7 @@ img {
   width: 100%;
 }
 
-span {
+description {
   padding: 5rem;
 }
 
@@ -160,10 +160,10 @@ span {
   width: 1rem;
 }
 /* Projects section */
-
+  
 .projects-section {
   text-align: center;
-  padding: 10rem 2rem;
+  padding: 3rem;
   background: var(--main-blue);
 }
 
@@ -183,7 +183,7 @@ span {
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  grid-gap: 4rem;
+  grid-gap: 3rem;
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
@@ -223,6 +223,7 @@ span {
 
 .project-image {
   height: calc(100% - 6.8rem);
+  width: 100%;
   object-fit: cover;
 }
 
@@ -231,6 +232,7 @@ span {
   padding: 1rem 0.5rem;
   height: 4rem;
   transition: color 0.3s ease-out;
+  text-align: center;
 }
 
 .project-title:hover{
@@ -239,20 +241,19 @@ span {
 
 .btn {
   display: inline-block;
-  padding: 1rem 2rem;
-  border-radius: 2px;
+  padding: 2.27rem 2rem;
   border: none;
-  color: var(--main-white);
+  color: #f0f0f0;
 }
 
 .btn-show-all {
-  font-size: 2rem;
-  background: var(--main-gray);
+  font-size: 2.2rem;
+  background: var(--main-red);
   transition: background 0.3s ease-out;
 }
 
 .btn-show-all:hover {
-  background: var(--main-red);
+  background: var(--main-blue);
 }
 
 .btn-show-all:hover > i {
@@ -263,7 +264,7 @@ span {
   margin-left: 10px;
   transform: translateX(0);
   transition: transform 0.3s ease-out;
-}
+} 
 
 /* Contact section */
 
