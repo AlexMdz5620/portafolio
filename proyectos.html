@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="./styles/stylesProyects.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200i,300,400&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:700&amp;display=swap" rel="stylesheet">
+
+    <title>Proyectos</title>
+
+    <script type="module" src="./js/proyectos.js"></script>
+  </head>
+  <body>
+    <!-- START NAV -->
+
+    <nav id="navbar" class="nav">
+      <ul class="nav-list">
+        <li>
+            <button onclick="window.location.href='./index.html'" class="btn btn-show-all">Inicio</button>
+        </li>
+        <li>
+          <button onclick="window.location.href='./sobreMi.html'" class="btn btn-show-all">Sobre Mi</button>
+      </li>
+        <li>
+          <a href="#projects">Proyectos</a>
+        </li>
+        <li>
+          <a href="#contact">Contactos</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- END NAV -->
+
+    <!-- START SELECT SECTION -->
+
+    <section id="select-section" class="select-section">
+        <h3>¿Cuáles proyectos queres ver?</h3>
+        <select name="" id="value-section">
+            <option value="" disabled="true" selected="true">Selecciona una opción</option>
+            <option value="todos">Todos</option>
+            <option value="dev_f">Dev.F</option>
+            <option value="frontend_mentor">Frontend Mentor</option>
+            <option value="personales">Personales</option>
+        </select>
+    </section>
+
+    <!-- END SELECT  SECTION -->
+
+    <!-- START PROJECTS SECTION -->
+
+    <section id="projects" class="projects-section">
+
+      <div id="projects-grid" class="projects-grid">
+
+        <div class="project project-tile perso">
+          <img class="project-image" src="./assets/proyectos_img/perso/enciclopedio_del_invocador.png" alt="project">
+          <a href="https://alexmdz5620.github.io/LoL-encyclopedia/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Enciclopedia del Invocador
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile perso">
+          <img class="project-image" src="./assets/proyectos_img/perso/calculadora_básica.png" alt="project">
+          <a href="https://alexmdz5620.github.io/basic_calculator/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Calculadora Básica
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile perso">
+          <img class="project-image" src="./assets/proyectos_img/perso/db_macrociclo.png" alt="project">
+          <a href="https://github.com/AlexMdz5620/api_training_theory_and_methodology" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              API de Conceptos de Teo. y Met. del Entrenamiento
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+        
+        <div class="project project-tile devF">
+          <img class="project-image" src="./assets/proyectos_img/dev.f/simulador_atm.png" alt="project">
+          <a href="https://alexmdz5620.github.io/proyecto-simulador-atm/#" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Simulador de un ATM
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        
+        <div class="project project-tile devF">
+          <img class="project-image" src="./assets/proyectos_img/dev.f/clone_pinterest.png" alt="project">
+          <a href="https://alexmdz5620.github.io/proyecto-clon-pinterest/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Clon de Pinterest
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+
+        <div class="project project-tile frontMentor">
+          <img class="project-image" src="./assets/proyectos_img/frontend_mentor/FQA.png" alt="project">
+          <a href="https://alexmdz5620.github.io/frontend-mentor-faq-accordion-card/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              FQA Carta en Acordeón
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile devF">
+          <img class="project-image" src="./assets/proyectos_img/dev.f/enciclopedia_items_LoL.png" alt="project">
+          <a href="https://alexmdz5620.github.io/proyecto-enciclopedia-items-lol/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Enciclopedia de Ítems
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile devF">
+          <img class="project-image" src="./assets/proyectos_img/dev.f/pokedex.png" alt="project">
+          <a href="https://alexmdz5620.github.io/proyecto-pokedex/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Pokedex
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile frontMentor">
+          <img class="project-image" src="./assets/proyectos_img/frontend_mentor/codigo_QR.png" alt="project">
+          <a href="https://alexmdz5620.github.io/frontend-mentor-qr-code/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Código QR
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile frontMentor">
+          <img class="project-image" src="./assets/proyectos_img/frontend_mentor/cuatro_tarjetas.png" alt="project">
+          <a href="https://alexmdz5620.github.io/frontend-mentor-four-card/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Cuatro Cartas
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile frontMentor">
+          <img class="project-image" src="./assets/proyectos_img/frontend_mentor/resumen_resultado.png" alt="project">
+          <a href="https://alexmdz5620.github.io/frontend-mentor-results-summary-component/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Componente de Resumen de Resultados
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile frontMentor">
+          <img class="project-image" src="./assets/proyectos_img/frontend_mentor/carta_perfume.png" alt="project">
+          <a href="https://alexmdz5620.github.io/frontend-mentor-product-preview-card-component-main/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Componente de Tarjeta de Vista Previa Principal
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile frontMentor">
+          <img class="project-image" src="./assets/proyectos_img/frontend_mentor/clasificacion_interactivo.png" alt="project">
+          <a href="https://alexmdz5620.github.io/frontend-mentor-interactive-rating-component-main/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Componente de Clasificación Interactivo
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile frontMentor">
+          <img class="project-image" src="./assets/proyectos_img/frontend_mentor/nft.png" alt="project">
+          <a href="https://alexmdz5620.github.io/frontend-mentor-nft-preview-card-component/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Carta de NFT
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile frontMentor">
+          <img class="project-image" src="./assets/proyectos_img/frontend_mentor/resumen_pedido.png" alt="project">
+          <a href="https://alexmdz5620.github.io/frontend-mentor-order-summary-component/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Resumen del pedido
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile frontMentor">
+          <img class="project-image" src="./assets/proyectos_img/frontend_mentor/estadisticas.png" alt="project">
+          <a href="https://alexmdz5620.github.io/frontend-mentor-stats-preview-card-component-main/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Tarjeta de Vista Previa de Estadísticas
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile frontMentor">
+          <img class="project-image" src="./assets/proyectos_img/frontend_mentor/3cartas.png" alt="project">
+          <a href="https://alexmdz5620.github.io/frontend-mentor-3-column-preview-card-component/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Tarjeta de Vista Previa de 3 Columnas
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile frontMentor">
+          <img class="project-image" src="./assets/proyectos_img/frontend_mentor/prueba_social.png" alt="project">
+          <a href="https://alexmdz5620.github.io/frontend-mentor-social-proof-section/" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              Sección de Prueba Social
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile devF">
+          <img class="project-image" src="./assets/proyectos_img/dev.f/groceries_don_rufino.png" alt="project">
+          <a href="https://github.com/AlexMdz5620/project-groceries-don-rufino" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              DB y BackEnd de Abarrotes Don Rufino
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+        <div class="project project-tile devF">
+          <img class="project-image" src="./assets/proyectos_img/dev.f/backend_cinema.png" alt="project">
+          <a href="https://github.com/AlexMdz5620/project-backend-cinema" target="_blank">
+            <p class="project-title">
+              <span class="code">&lt;</span>
+              DB y BackEnd de un Cine
+              <span class="code">/&gt;</span>
+            </p>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- END PROJECTS SECTION -->
+
+    <!-- START FOOTER SECTION -->
+
+    <footer id="contact">
+        <div class="contact-section-header">
+          <p>Trabajemos juntos!!!</p>
+          <p>¿O invitame un café? ;)</p>
+        </div>
+        <div class="contact-links">
+            <a id="profile-link" href="https://github.com/AlexMdz5620" target="_blank" class="btn contact-details"><i class="fab fa-github"></i> GitHub</a>
+            <a id="profile-link" href="https://www.linkedin.com/in/manuel-alejandro-mendoza-c%C3%A1rdenas-133967274/" target="_blank" class="btn contact-details"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <!-- <a href="ichialex5620@gmail.com" class="btn contact-details"><i class="fas fa-at"></i> Enviame un correo</a> -->
+            <!-- <a href="tel:555-555-5555" class="btn contact-details"><i class="fas fa-mobile-alt"></i> Call me</a> -->
+          </div>
+    </footer>
+
+    <!-- END FOOTER SECTION -->
+  
+
+</body></html>
