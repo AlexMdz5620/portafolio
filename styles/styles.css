@@ -86,10 +86,6 @@ img {
   width: 100%;
 }
 
-description {
-  padding: 5rem;
-}
-
 /* nav */
 
 .nav {
@@ -137,8 +133,6 @@ description {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 100%;
-  height: 100vh;
   background-color: #000;
   background-image: linear-gradient(62deg, #3a3d40 0%, #181719 100%);
   padding: 8rem;
@@ -149,6 +143,11 @@ description {
   font-weight: 200;
   font-style: italic;
   color: var(--main-red);
+}
+
+.welcome-section > span {
+  margin: 5rem;
+  max-width: 65ch;
 }
 
 .welcome-section img{
@@ -247,6 +246,7 @@ description {
 }
 
 .btn-show-all {
+  margin: 10px;
   font-size: 2.2rem;
   background: var(--main-red);
   transition: background 0.3s ease-out;
