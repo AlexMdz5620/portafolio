@@ -44,7 +44,7 @@ export default function ProjectsSection() {
     return (
         <section
             id="projects"
-            className="text-center py-8 bg-[#45567d] px-3 sm:px-12"
+            className="text-center py-8 bg-[#45567d] w-full"
         >
             <h2 className="max-w-4xl mx-auto mb-10 pb-2 border-b-2 border-white text-white text-3xl md:text-4xl font-semibold">
                 Aquí están algunos de mis Proyectos
