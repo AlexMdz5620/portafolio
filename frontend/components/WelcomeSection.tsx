@@ -28,7 +28,7 @@ export default function WelcomeSection() {
                 </div>
 
                 {/* Contenedor de dos columnas */}
-                <div className="flex md:flex-row mb-8 lg:mb-12">
+                <div className="flex flex-col w-full md:flex-row items-center justify-around gap-8 mb-8 mt-8 lg:mb-12 lg:mt-0">
 
                     <div className="text-white md:text-center text-center md:text-lg leading-relaxed flex-1">
                         <p>
