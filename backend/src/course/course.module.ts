@@ -8,6 +8,7 @@ import { ProjectModule } from '../project/project.module';
 import { TechModule } from '../tech/tech.module';
 import { Project } from '../project/entities/project.entity';
 import { Tech } from '../tech/entities/tech.entity';
+import { UploadImageModule } from 'src/upload-image/upload-image.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { Tech } from '../tech/entities/tech.entity';
     UserModule,
     ProjectModule,
     TechModule,
+    UploadImageModule,
   ],
   controllers: [CourseController],
   providers: [CourseService],

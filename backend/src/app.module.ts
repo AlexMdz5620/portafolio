@@ -10,6 +10,7 @@ import { CourseModule } from './course/course.module';
 import { TechModule } from './tech/tech.module';
 import { AuthModule } from './auth/auth.module';
 import { PublicModule } from './public/public.module';
+import { UploadImageModule } from './upload-image/upload-image.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { PublicModule } from './public/public.module';
     TechModule,
     AuthModule,
     PublicModule,
+    UploadImageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
