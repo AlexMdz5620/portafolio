@@ -1,19 +1,19 @@
+import { Project } from '@/schemas/zodSchema';
 import Image from 'next/image';
-import { Project } from '@/types';
 
 interface ProjectCardProps {
     project: Project;
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
-    return (
+    if (project) return (
         <div
             key={project.id}
             className="bg-[#303841] shadow-md rounded-sm h-[18rem] transition-transform duration-300 ease-out hover:scale-105"
         >
             <div className="h-[calc(100%-6.8rem)] w-full overflow-hidden">
                 <Image
-                    src={project.image}
+                    src={project.img_url}
                     alt={project.title}
                     width={250}
                     height={250}
@@ -21,7 +21,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                 />
             </div>
             <a
-                href={project.link}
+                href={project.demo_url}
                 target="_blank"
                 rel="noopener noreferrer"
 

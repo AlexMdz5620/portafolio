@@ -19,7 +19,7 @@ export class CreateUserDto {
   lastname: string;
 
   @IsNotEmpty({ message: 'El email no puede ir vacío.' })
-  @IsEmail()
+  @IsEmail({}, { message: 'El correo electrónico no tiene un formato válido.' })
   @MaxLength(40)
   email: string;
 
@@ -38,7 +38,7 @@ export class CreateUserDto {
 
   @IsNotEmpty({ message: 'La contraseña es obligatória.' })
   @IsString({ message: 'Valor no válido.' })
-  @MinLength(6)
+  @MinLength(8)
   @MaxLength(255)
   password: string;
 }

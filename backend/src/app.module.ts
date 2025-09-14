@@ -11,6 +11,7 @@ import { TechModule } from './tech/tech.module';
 import { AuthModule } from './auth/auth.module';
 import { PublicModule } from './public/public.module';
 import { UploadImageModule } from './upload-image/upload-image.module';
+import { LinkModule } from './link/link.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { UploadImageModule } from './upload-image/upload-image.module';
     AuthModule,
     PublicModule,
     UploadImageModule,
+    LinkModule,
   ],
   controllers: [AppController],
   providers: [AppService],

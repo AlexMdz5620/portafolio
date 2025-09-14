@@ -2,6 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Course } from '../../course/entities/course.entity';
 import { Project } from '../../project/entities/project.entity';
 import { Tech } from '../../tech/entities/tech.entity';
+import { Link } from 'src/link/entities/link.entity';
 
 @Entity()
 export class User {
@@ -48,4 +49,7 @@ export class User {
 
   @OneToMany(() => Tech, (tech) => tech.user)
   techs: Tech[];
+
+  @OneToMany(() => Link, (link) => link.user)
+  links: Link[];
 }

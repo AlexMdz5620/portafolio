@@ -66,7 +66,7 @@ export class ProjectController {
     return this.projectService.removeTech(+id, techId, req.user);
   }
 
-  @Post('upload-img')
+  @Post(':id/upload-img')
   @UseInterceptors(
     FileInterceptor('file', {
       fileFilter: (req, file, cb) => {

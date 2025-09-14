@@ -1,8 +1,12 @@
-import { FaGithub, FaLinkedin, FaCoffee } from "react-icons/fa";
+"use client";
+import { usePublicStore } from '@/store/publicStore';
+import { /* FaGithub, FaLinkedin, */ FaCoffee } from "react-icons/fa";
+import LinkFooter from './ui/LinkFooter';
 
 export default function Footer() {
-    return (
-        <footer 
+    const { profile } = usePublicStore()
+    if (profile) return (
+        <footer
             className="flex flex-col items-center justify-center p-8 bg-gradient-to-b from-gray-900 to-gray-800 border-t-4 border-red-500 font-light"
         >
             <div className="text-center mb-8">
@@ -14,7 +18,13 @@ export default function Footer() {
                 </p>
             </div>
             <div className="flex justify-center w-full max-w-4xl flex-wrap">
-                <a
+                {profile.links && (profile.links.map(link => (
+                    <LinkFooter
+                        key={link.id}
+                        link={link}
+                    />
+                )))}
+                {/* <a
                     href="https://github.com/AlexMdz5620"
                     target="_blank"
                     className="flex items-center text-xl md:text-2xl bg-white/10 text-white mx-4 my-2 px-6 py-3 rounded-lg transition-all duration-300 hover:translate-y-2 hover:bg-white/20 backdrop-blur-sm"
@@ -29,7 +39,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                 >
                     <FaLinkedin className="mr-2" /> LinkedIn
-                </a>
+                </a> */}
             </div>
             <p className="text-gray-400 mt-8 text-sm">
                 &copy; {new Date().getFullYear()} - Hecho con todo mi ❤️ y mucho café

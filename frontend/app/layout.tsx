@@ -3,6 +3,8 @@ import { Poppins, Raleway } from "next/font/google";
 import "./globals.css";
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
+import { publicService } from '@/service/publicService';
+import PublicHydrator from '@/components/utils/PublicHydrator';
 
 const poppins = Poppins({
   weight: ['200', '400', '700'],
@@ -23,20 +25,41 @@ export const metadata: Metadata = {
   description: "Portafolio de los poryectos personales.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="es" className={`${poppins.variable} ${raleway.variable}`}>
-      <body
-        className="font-sans text-[#f0f0f0]"
-      >
-        <Nav />
-        {children}
-        <Footer />
-      </body>
-    </html>
-  );
+  try {
+    const [profile, projects, techs, courses] = await Promise.all([
+      publicService.getProfile(),
+      publicService.getProjects(),
+      publicService.getTech(),
+      publicService.getCourses(),
+    ]);
+
+    const initialData = { profile, projects, techs, courses };
+
+    return (
+      <html lang="es" className={`${poppins.variable} ${raleway.variable}`}>
+        <body
+          className="font-sans text-[#f0f0f0]"
+        >
+          <Nav />
+          <PublicHydrator initialData={initialData} />
+          {children}
+          <Footer />
+        </body>
+      </html>
+    );
+  } catch (error) {
+    console.error("Error cargando datos públicos en layout:", error);
+    return (
+      <html lang="es">
+        <body>
+          {children}
+        </body>
+      </html>
+    );
+  }
 }

@@ -8,6 +8,7 @@ import {
   MaxLength,
   ArrayUnique,
   IsInt,
+  IsUrl,
 } from 'class-validator';
 
 export class CreateProjectDto {
@@ -21,11 +22,13 @@ export class CreateProjectDto {
   @MaxLength(500)
   img_url?: string;
 
+  @IsUrl()
   @IsNotEmpty({ message: 'La URL de del repositorio no puede ir vacío.' })
   @IsString({ message: 'Valor no válido.' })
   @MaxLength(500)
   github_url: string;
 
+  @IsUrl()
   @IsNotEmpty({ message: 'La URL del proyecto no puede ir vacío.' })
   @IsString({ message: 'Valor no válido.' })
   @MaxLength(500)

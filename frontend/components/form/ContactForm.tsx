@@ -37,6 +37,7 @@ export default function ContactForm() {
             // Resetear el estado después de 3 segundos
             setTimeout(() => setSubmitStatus('idle'), 3000);
         } catch (error) {
+            console.log(error);
             setSubmitStatus('error');
             setTimeout(() => setSubmitStatus('idle'), 3000);
         } finally {

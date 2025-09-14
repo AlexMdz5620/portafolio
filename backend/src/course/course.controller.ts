@@ -57,7 +57,7 @@ export class CourseController {
     return this.courseService.remove(+id, req.user);
   }
 
-  @Post('upload-img')
+  @Post(':id/upload-img')
   @UseInterceptors(
     FileInterceptor('file', {
       fileFilter: (req, file, cb) => {

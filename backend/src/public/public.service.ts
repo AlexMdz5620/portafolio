@@ -22,6 +22,7 @@ export class PublicService {
   async getProfile(userId: number) {
     const user = await this.userRepository.findOne({
       where: { id: userId },
+      relations: ['links'],
     });
     if (!user) throw new NotFoundException('Perfil no encontrado');
     return {
@@ -31,13 +32,13 @@ export class PublicService {
       photo_url: user.photo_url,
       description_1: user.description_1,
       description_2: user.description_2,
+      links: user.links,
     };
   }
 
   async getProjects(userId: number) {
     return this.projectRepository.find({
       where: { user: { id: userId } },
-      relations: ['techs'],
     });
   }
 
