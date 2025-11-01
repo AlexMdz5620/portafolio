@@ -8,12 +8,14 @@ import * as bcrypt from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { EncoderService } from './encoder.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    private encoderService: EncoderService,
   ) {}
 
   async register(registerDto: RegisterDto) {
@@ -23,7 +25,7 @@ export class AuthService {
     }
 
     // Hashear la contraseña.
-    const hashedPass = await bcrypt.hash(registerDto.password, 10);
+    const hashedPass = await this.encoderService.hashPass(registerDto.password);
 
     // Crear el usuario.
     const user = await this.userService.create({
@@ -41,7 +43,7 @@ export class AuthService {
     };
   }
 
-  async login(loginDto: LoginDto) {
+  async login(loginDto: LoginDto): Promise<{ access_token: string }> {
     const user = await this.userService.findByEmail(loginDto.email);
 
     if (!user) {
@@ -49,28 +51,19 @@ export class AuthService {
     }
 
     // Verificar la contraseña.
-    const isPassValid = await bcrypt.compare(loginDto.password, user.password);
+    const isPassValid = await this.encoderService.checkPass(
+      loginDto.password,
+      user.password,
+    );
 
     if (!isPassValid) {
-      throw new UnauthorizedException('Credenciales inválidas');
+      throw new UnauthorizedException('Credenciales inválidas.');
     }
 
     const payload = { email: user.email, id: user.id };
-    const access_token = this.jwtService.sign(payload);
+    const access_token = await this.jwtService.signAsync(payload);
 
-    return {
-      access_token,
-      user: {
-        id: user.id,
-        name: user.name,
-        lastname: user.lastname,
-        email: user.email,
-        photo_url: user.photo_url,
-        courses: user.courses,
-        projects: user.projects,
-        tech: user.techs,
-      },
-    };
+    return { access_token };
   }
 
   async validateUser(email: string, password: string) {
@@ -83,9 +76,8 @@ export class AuthService {
           lastname: user.lastname,
           email: user.email,
           photo_url: user.photo_url,
-          courses: user.courses,
-          projects: user.projects,
-          tech: user.techs,
+          links: user.links,
+          descriptions: user.descriptions,
         },
       };
     }

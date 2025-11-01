@@ -1,15 +1,18 @@
+import { Courses } from '@/schemas/courseSchema';
+import { Projects } from '@/schemas/projectSchema';
+import { Techs } from '@/schemas/techSchema';
+import { User } from '@/schemas/userSchema';
 import { create } from 'zustand';
-import { Course, Project, Tech, User } from '@/schemas/zodSchema';
 
 interface PublicState {
     profile: User | null;
-    projects: Project[];
-    techs: Tech[];
-    courses: Course[];
+    projects: Projects;
+    techs: Techs;
+    courses: Courses;
     setProfile: (profile: User) => void;
-    setProjects: (projects: Project[]) => void;
-    setTechs: (techs: Tech[]) => void;
-    setCourses: (courses: Course[]) => void;
+    setProjects: (projects: Projects) => void;
+    setTechs: (techs: Techs) => void;
+    setCourses: (courses: Courses) => void;
 }
 
 export const usePublicStore = create<PublicState>(set => ({

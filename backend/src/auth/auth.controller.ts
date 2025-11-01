@@ -22,8 +22,8 @@ export class AuthController {
   }
 
   @Post('login')
-  login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+  async login(@Body() loginDto: LoginDto): Promise<{ access_token: string }> {
+    return await this.authService.login(loginDto);
   }
 
   @Get('me')
@@ -32,5 +32,17 @@ export class AuthController {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userWithoutPassword } = req.user;
     return userWithoutPassword;
+  }
+
+  @Get('verify')
+  @UseGuards(JwtAuthGuard)
+  verifyToken(@Request() req: AuthRequest) {
+    return {
+      valid: true,
+      user: {
+        id: req.user.id,
+        email: req.user.email,
+      },
+    };
   }
 }

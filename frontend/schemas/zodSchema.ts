@@ -1,68 +1,24 @@
 import { z } from 'zod';
 
-/* Link */
-export const linkSchema = z.object({
-    id: z.number(),
-    name: z.string(),
-    link: z.email(),
-    active: z.boolean(),
+/* Login */
+export const LoginSchema = z.object({
+    email: z.string()
+        .min(1, { message: 'El Email es Obligatorio' })
+        .email({ message: 'Email no válido' }),
+    password: z.string()
+        .min(1, { message: 'El Password no puede ir vacio' })
 });
 
-export type Link = z.infer<typeof linkSchema>;
-
-/* User */
-export const userSchema = z.object({
-    id: z.number(),
-    name: z.string(),
-    lastname: z.string(),
-    email: z.string(),
-    photo_url: z.string(),
-    description_1: z.optional(z.string()),
-    description_2: z.optional(z.string()),
-    links: z.array(linkSchema),
+/* Errors & Success */
+export const SuccessSchema = z.object({
+    msg: z.string(),
 });
 
-export type User = z.infer<typeof userSchema>;
-
-/* Projects */
-export const projectSchema = z.object({
-    id: z.number(),
-    title: z.string(),
-    img_url: z.string(),
-    github_url: z.optional(z.string()),
-    demo_url: z.optional(z.string()),
-    type: z.string(),
-    featured: z.boolean(),
-    description: z.string(),
-    created_at: z.date(),
+export const ErrorResponseSchema = z.object({
+    message: z.string(),       // mensaje del error
+    error: z.string().optional(), // tipo de error (ej. Unauthorized)
+    statusCode: z.number().optional(),
 });
-
-export type Project = z.infer<typeof projectSchema>;
-
-/* Tech */
-export const techSchema = z.object({
-    id: z.number(),
-    name: z.string(),
-    mastery_level: z.string(),
-    category: z.string(),
-    created_at: z.date(),
-});
-
-export type Tech = z.infer<typeof techSchema>;
-
-/* Course */
-export const courseSchema = z.object({
-    id: z.number(),
-    title: z.string(),
-    institute: z.string(),
-    img_url: z.string(),
-    description: z.string(),
-    complete_date: z.date(),
-    created_at: z.date(),
-    user: z.optional(userSchema),
-});
-
-export type Course = z.infer<typeof courseSchema>;
 
 /* Contact Form */
 export const contacFormSchema = z.object({
@@ -77,3 +33,11 @@ export const contacFormSchema = z.object({
 });
 
 export type ContacForm = z.infer<typeof contacFormSchema>;
+
+/* Change Password Form */
+export const changePassForm = z.object({
+    password: z.string(),
+    new_password: z.string(),
+});
+
+export type ChangePassForm = z.infer<typeof changePassForm>

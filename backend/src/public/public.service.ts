@@ -22,7 +22,7 @@ export class PublicService {
   async getProfile(userId: number) {
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['links'],
+      relations: ['links', 'descriptions'],
     });
     if (!user) throw new NotFoundException('Perfil no encontrado');
     return {
@@ -30,9 +30,8 @@ export class PublicService {
       lastname: user.lastname,
       email: user.email,
       photo_url: user.photo_url,
-      description_1: user.description_1,
-      description_2: user.description_2,
       links: user.links,
+      descriptions: user.descriptions,
     };
   }
 

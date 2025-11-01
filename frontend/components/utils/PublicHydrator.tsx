@@ -2,7 +2,10 @@
 
 import { useEffect } from "react";
 import { usePublicStore } from "@/store/publicStore";
-import { Course, Project, Tech, User } from '@/schemas/zodSchema';
+import { User } from '@/schemas/userSchema';
+import { Project } from '@/schemas/projectSchema';
+import { Tech } from '@/schemas/techSchema';
+import { Course } from '@/schemas/courseSchema';
 
 type InitialData = {
     profile?: User;

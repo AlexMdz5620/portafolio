@@ -1,12 +1,38 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IntelligentNavLink } from './utils/IntelligentNavLink';
 import { useRouteDetection } from '@/hooks/useRouteDetection';
+import LogoutButton from './auth/LogoutButton';
+import { adminPage } from '@/data';
 
 export default function Nav() {
+  const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isHomePage } = useRouteDetection();
+  const {
+    isHomePage,
+    isAdminPage,
+    isAdminCoursePage,
+    isAdminDescriptionPage,
+    isAdminLinkPage,
+    isAdminProjectPage,
+    isAdminTechPage,
+    isAdminUserPage,
+  } = useRouteDetection();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const isAdmin =
+    isAdminCoursePage ||
+    isAdminDescriptionPage ||
+    isAdminLinkPage ||
+    isAdminProjectPage ||
+    isAdminTechPage ||
+    isAdminUserPage;
 
   return (
     <nav className="fixed top-0 left-0 w-full shadow-md z-50 bg-[#be3144]">
@@ -14,9 +40,9 @@ export default function Nav() {
         <div className="flex justify-between h-16">
           {/* Logo o marca - agregué esto para mejor estructura */}
           <div className="flex-shrink-0 flex items-stretch">
-            {!isHomePage && (
+            {!isHomePage && !isAdminPage && (
               <IntelligentNavLink
-                href="/"
+                href={!isHomePage ? '/' : '/admin'}
                 className="text-white hover:bg-[#45567d] px-6 py-4 text-lg font-bold transition-colors duration-300 block"
               >
                 Inicio
@@ -24,45 +50,83 @@ export default function Nav() {
             )}
           </div>
 
+          {/* Rutas para admin */}
+          <div className="flex-shrink-0 flex items-stretch">
+            {isAdminPage && (
+              <div className="hidden md:flex items-stretch h-16">
+                <ul className="flex space-x-0">
+                  <li className="flex items-stretch">
+                    <LogoutButton />
+                  </li>
+                </ul>
+              </div>
+            )}
+            {isAdmin && (
+              <div className="hidden md:flex items-stretch h-16">
+                <ul className="flex space-x-0">
+                  {adminPage.map((page, idx) => (
+                    <li
+                      key={idx}
+                      className="flex items-stretch">
+                      <IntelligentNavLink
+                        href={`${page.url}`}
+                        className="text-white hover:bg-[#45567d] px-6 py-4 text-lg font-medium transition-colors duration-300 block"
+                      >
+                        {page.name}
+                      </IntelligentNavLink>
+                    </li>
+                  ))}
+                  <ul className="flex space-x-0">
+                    <li className="flex items-stretch">
+                      <LogoutButton />
+                    </li>
+                  </ul>
+                </ul>
+              </div>
+            )}
+          </div>
+
           {/* Elementos de navegación para desktop */}
-          <div className="hidden md:flex items-stretch h-16">
-            <ul className="flex space-x-0">
-              <li className="flex items-stretch">
-                <IntelligentNavLink
-                  href="#welcome-section"
-                  className="text-white hover:bg-[#45567d] px-6 py-4 text-lg font-medium transition-colors duration-300 block"
-                >
-                  Sobre Mi
-                </IntelligentNavLink>
-              </li>
-              <li className="flex items-stretch">
-                <IntelligentNavLink
-                  href="#projects"
-                  className="text-white hover:bg-[#45567d] px-6 py-4 text-lg font-medium transition-colors duration-300 block"
-                >
-                  Proyectos
-                </IntelligentNavLink>
-              </li>
-              {isHomePage &&
-                (<li className="flex items-stretch">
+          {!isAdminPage && !isAdmin && (
+            <div className="hidden md:flex items-stretch h-16">
+              <ul className="flex space-x-0">
+                <li className="flex items-stretch">
                   <IntelligentNavLink
-                    href="#tech"
+                    href="#welcome-section"
                     className="text-white hover:bg-[#45567d] px-6 py-4 text-lg font-medium transition-colors duration-300 block"
                   >
-                    Tecnologías
+                    Sobre Mi
                   </IntelligentNavLink>
-                </li>)
-              }
-              <li className="flex items-stretch">
-                <IntelligentNavLink
-                  href="/contacto"
-                  className="text-white hover:bg-[#45567d] px-6 py-4 text-lg font-medium transition-colors duration-300 block"
-                >
-                  Contacto
-                </IntelligentNavLink>
-              </li>
-            </ul>
-          </div>
+                </li>
+                <li className="flex items-stretch">
+                  <IntelligentNavLink
+                    href="#projects"
+                    className="text-white hover:bg-[#45567d] px-6 py-4 text-lg font-medium transition-colors duration-300 block"
+                  >
+                    Proyectos
+                  </IntelligentNavLink>
+                </li>
+                {isHomePage &&
+                  (<li className="flex items-stretch">
+                    <IntelligentNavLink
+                      href="#tech"
+                      className="text-white hover:bg-[#45567d] px-6 py-4 text-lg font-medium transition-colors duration-300 block"
+                    >
+                      Tecnologías
+                    </IntelligentNavLink>
+                  </li>)
+                }
+                <li className="flex items-stretch">
+                  <IntelligentNavLink
+                    href="/contacto"
+                    className="text-white hover:bg-[#45567d] px-6 py-4 text-lg font-medium transition-colors duration-300 block"
+                  >
+                    Contacto
+                  </IntelligentNavLink>
+                </li>
+              </ul>
+            </div>
+          )}
 
           {/* Botón de menú móvil */}
           <div className="md:hidden flex items-center">
@@ -114,34 +178,50 @@ export default function Nav() {
       {isMenuOpen && (
         <div className="md:hidden bg-[#be3144]">
           <div className="px-2 pt-2 pb-3 space-y-0 sm:px-3">
-            <IntelligentNavLink
-              href="#welcome-section"
-              className="text-white hover:bg-[#45567d] block px-3 py-4 rounded-md text-base font-medium transition-colors duration-300"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Sobre Mi
-            </IntelligentNavLink>
-            <IntelligentNavLink
-              href="#projects"
-              className="text-white hover:bg-[#45567d] block px-3 py-4 rounded-md text-base font-medium transition-colors duration-300"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Proyectos
-            </IntelligentNavLink>
-            <IntelligentNavLink
-              href="#tech"
-              className="text-white hover:bg-[#45567d] block px-3 py-4 rounded-md text-base font-medium transition-colors duration-300"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Tecnologías
-            </IntelligentNavLink>
-            <IntelligentNavLink
-              href="/contacto"
-              className="text-white hover:bg-[#45567d] block px-3 py-4 rounded-md text-base font-medium transition-colors duration-300"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Contacto
-            </IntelligentNavLink>
+            {isAdminPage && (
+              <>
+                <IntelligentNavLink
+                  href="#welcome-section"
+                  className="text-white hover:bg-[#45567d] block px-3 py-4 rounded-md text-base font-medium transition-colors duration-300"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Sobre Mi
+                </IntelligentNavLink>
+              </>
+            )}
+
+            {!isAdminPage && (
+              <>
+                <IntelligentNavLink
+                  href="#welcome-section"
+                  className="text-white hover:bg-[#45567d] block px-3 py-4 rounded-md text-base font-medium transition-colors duration-300"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Sobre Mi
+                </IntelligentNavLink>
+                <IntelligentNavLink
+                  href="#projects"
+                  className="text-white hover:bg-[#45567d] block px-3 py-4 rounded-md text-base font-medium transition-colors duration-300"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Proyectos
+                </IntelligentNavLink>
+                <IntelligentNavLink
+                  href="#tech"
+                  className="text-white hover:bg-[#45567d] block px-3 py-4 rounded-md text-base font-medium transition-colors duration-300"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Tecnologías
+                </IntelligentNavLink>
+                <IntelligentNavLink
+                  href="/contacto"
+                  className="text-white hover:bg-[#45567d] block px-3 py-4 rounded-md text-base font-medium transition-colors duration-300"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Contacto
+                </IntelligentNavLink>
+              </>
+            )}
           </div>
         </div>
       )}

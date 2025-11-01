@@ -28,14 +28,6 @@ export class CreateUserDto {
   @MaxLength(500)
   photo_url?: string;
 
-  @IsOptional()
-  @IsString({ message: 'Valor no válido.' })
-  description_1?: string;
-
-  @IsOptional()
-  @IsString({ message: 'Valor no válido.' })
-  description_2?: string;
-
   @IsNotEmpty({ message: 'La contraseña es obligatória.' })
   @IsString({ message: 'Valor no válido.' })
   @MinLength(8)

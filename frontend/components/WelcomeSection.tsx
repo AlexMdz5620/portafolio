@@ -1,13 +1,15 @@
 "use client";
 
 import Link from 'next/link';
-import { FaChevronRight/* , FaGithub, FaLinkedin */ } from 'react-icons/fa';
+import { FaChevronRight } from 'react-icons/fa';
 import ImagePorfile from './ui/ImagePorfile';
 import { usePublicStore } from '@/store/publicStore';
 import SocialNetLink from './ui/Link';
 
 export default function WelcomeSection() {
     const { profile } = usePublicStore();
+    const descriptions = profile?.descriptions;
+
     if (profile) return (
         <section
             id="welcome-section"
@@ -40,34 +42,23 @@ export default function WelcomeSection() {
                 <div className="flex flex-col w-full md:flex-row items-center justify-around gap-8 mb-8 mt-8 lg:mb-12 lg:mt-0">
 
                     <div className="text-white md:text-center text-center md:text-lg leading-relaxed flex-1">
-                        <p>
-                            {profile.description_1}
+                        <div>
+                            {descriptions?.map(desc => {
+                                const main = desc.type;
+                                if (main === 'main') return (
+                                    <p key={desc.id}>
+                                        {desc.content}
+                                    </p>
+                                )
+                            })}
                             {/* Maestro en Cultura Física apasionado por el desarrollo web, buscando abrirse campo en este mundo tecnológico,
                             con ansias de trabajar en nuevos proyectos que me reten y estimulen mi crecimiento como programador y persona. */}
-                        </p>
+                        </div>
                     </div>
 
                     <div className="flex flex-col items-center md:items-start justify-center flex-1 gap-6">
                         {/* Enlaces sociales */}
                         <div className="flex justify-center space-x-6 w-full">
-                            {/* <a
-                                href="https://github.com/AlexMdz5620"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-white text-3xl hover:text-[#be3144] transition-colors duration-300"
-                                aria-label="GitHub"
-                            >
-                                <FaGithub />
-                            </a>
-                            <a
-                                href="https://www.linkedin.com/in/manuel-alejandro-mendoza-c%C3%A1rdenas-133967274/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-white text-3xl hover:text-[#be3144] transition-colors duration-300"
-                                aria-label="LinkedIn"
-                            >
-                                <FaLinkedin />
-                            </a> */}
                             {profile.links && (profile.links.map(link => (
                                 <SocialNetLink
                                     key={link.id}

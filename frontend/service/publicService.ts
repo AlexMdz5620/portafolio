@@ -1,9 +1,12 @@
+import { User } from '@/schemas/userSchema';
 import { apiFetch } from './api';
-import { Course, Project, Tech, User } from '@/schemas/zodSchema';
+import { Projects } from '@/schemas/projectSchema';
+import { Techs } from '@/schemas/techSchema';
+import { Courses } from '@/schemas/courseSchema';
 
 export const publicService = {
     getProfile: () => apiFetch<User>('/public/profile/1'),
-    getProjects: () => apiFetch<Project[]>('/public/projects/1'),
-    getTech: () => apiFetch<Tech[]>('/public/techs/1'),
-    getCourses: () => apiFetch<Course[]>('/public/courses/1')
+    getProjects: () => apiFetch<Projects>('/public/projects/1'),
+    getTech: () => apiFetch<Techs>('/public/techs/1'),
+    getCourses: () => apiFetch<Courses>('/public/courses/1')
 }

@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { PublicModule } from './public/public.module';
 import { UploadImageModule } from './upload-image/upload-image.module';
 import { LinkModule } from './link/link.module';
+import { DescriptionModule } from './description/description.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { LinkModule } from './link/link.module';
     PublicModule,
     UploadImageModule,
     LinkModule,
+    DescriptionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

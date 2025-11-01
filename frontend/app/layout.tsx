@@ -5,6 +5,7 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import { publicService } from '@/service/publicService';
 import PublicHydrator from '@/components/utils/PublicHydrator';
+import ToastNotification from '@/components/ui/ToastNotification';
 
 const poppins = Poppins({
   weight: ['200', '400', '700'],
@@ -48,6 +49,7 @@ export default async function RootLayout({
           <Nav />
           <PublicHydrator initialData={initialData} />
           {children}
+          <ToastNotification />
           <Footer />
         </body>
       </html>

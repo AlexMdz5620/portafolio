@@ -3,6 +3,7 @@ import { Course } from '../../course/entities/course.entity';
 import { Project } from '../../project/entities/project.entity';
 import { Tech } from '../../tech/entities/tech.entity';
 import { Link } from 'src/link/entities/link.entity';
+import { Description } from 'src/description/entities/description.entity';
 
 @Entity()
 export class User {
@@ -20,12 +21,6 @@ export class User {
 
   @Column({ type: 'varchar', length: 500, nullable: true })
   photo_url: string;
-
-  @Column({ type: 'text', nullable: true })
-  description_1: string;
-
-  @Column({ type: 'text', nullable: true })
-  description_2: string;
 
   @Column({ type: 'varchar', length: 255 })
   password: string;
@@ -52,4 +47,7 @@ export class User {
 
   @OneToMany(() => Link, (link) => link.user)
   links: Link[];
+
+  @OneToMany(() => Description, (description) => description.user)
+  descriptions: Description[];
 }

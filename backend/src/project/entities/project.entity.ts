@@ -30,7 +30,7 @@ export class Project {
   type: string;
 
   @Column({ type: 'boolean', default: false })
-  featured: boolean; // Destacado, si el proyecto es más importante o de mayor calidad
+  featured: boolean;
 
   @Column({ type: 'text', nullable: true })
   description: string;
