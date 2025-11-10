@@ -10,7 +10,6 @@ import { CourseModule } from './course/course.module';
 import { TechModule } from './tech/tech.module';
 import { AuthModule } from './auth/auth.module';
 import { PublicModule } from './public/public.module';
-import { UploadImageModule } from './upload-image/upload-image.module';
 import { LinkModule } from './link/link.module';
 import { DescriptionModule } from './description/description.module';
 
@@ -27,7 +26,6 @@ import { DescriptionModule } from './description/description.module';
     TechModule,
     AuthModule,
     PublicModule,
-    UploadImageModule,
     LinkModule,
     DescriptionModule,
   ],

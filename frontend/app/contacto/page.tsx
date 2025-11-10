@@ -4,7 +4,7 @@ import { FaGithub, FaLinkedin } from 'react-icons/fa';
 
 export default function ContactoPage() {
     return (
-        <div className="pt-16 min-h-screen bg-gradient-to-b from-[#3a3d40] to-[#181719]">
+        <div className="pt-16 min-h-screen bg-linear-to-b from-[#3a3d40] to-[#181719]">
             <div className="max-w-6xl mx-auto px-4 py-16">
                 {/* Header */}
                 <div className="text-center mb-10">

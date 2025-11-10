@@ -12,7 +12,7 @@ export class CreateCourseDto {
   @MaxLength(200)
   title: string;
 
-  @IsOptional()
+  @IsNotEmpty({ message: 'La institución es obligatoria.' })
   @IsString({ message: 'Valor no válido.' })
   @MaxLength(200)
   institute?: string;
@@ -26,7 +26,7 @@ export class CreateCourseDto {
   @IsString({ message: 'Valor no válido.' })
   description?: string;
 
-  @IsOptional()
+  @IsNotEmpty({ message: 'La fecha de finalización es obligatoria.' })
   @IsDateString()
   complete_date?: Date;
 }

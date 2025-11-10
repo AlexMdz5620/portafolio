@@ -16,7 +16,7 @@ export default function ProyectosPage() {
     : projects.filter(project => project.type === selectedCategory);
 
   return (
-    <div className="pt-16 min-h-screen bg-gradient-to-b from-[#3a3d40] to-[#181719]">
+    <div className="pt-16 min-h-screen bg-linear-to-b from-[#3a3d40] to-[#181719]">
       {/* Sección de Selección */}
       <section className="flex flex-col items-center justify-center py-12 px-4">
         <h3 className="text-2xl md:text-3xl font-bold mb-6 text-center">

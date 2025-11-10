@@ -1,16 +1,18 @@
 'use client';
 
 import { logout } from '@/actions/logout.action';
+import { Button } from '../ui/button';
 
 export default function LogoutButton() {
   return (
-    <button
+    <Button
+      variant="destructive"
+      className="w-full hover:bg-gray-700 hover:text-white cursor-pointer duration-300"
       onClick={async () => {
         await logout();
       }}
-      className="text-white hover:bg-[#45567d] px-6 py-4 text-lg font-medium transition-colors duration-300 block"
     >
       Cerrar Sesión
-    </button>
+    </Button>
   );
 }

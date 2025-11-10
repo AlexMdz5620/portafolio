@@ -1,7 +1,7 @@
 import { apiFetch } from './api';
 import { ChangePassForm } from '@/schemas/zodSchema';
 import { User, UserForm } from '@/schemas/userSchema';
-import { Course, CourseForm } from '@/schemas/courseSchema';
+import { Course, CourseFormData } from '@/schemas/courseSchema';
 import { Project, ProjectForm } from '@/schemas/projectSchema';
 import { Tech, TechForm } from '@/schemas/techSchema';
 import { Link, LinkForm } from '@/schemas/linkSchema';
@@ -34,7 +34,7 @@ export const adminProfileService = {
 
 // Course
 export const adminCourseService = {
-    create: (body: CourseForm, auth: {
+    create: (body: CourseFormData, auth: {
         Authorization: string;
     }) => apiFetch('/courses', {
         method: 'POST',
@@ -46,8 +46,8 @@ export const adminCourseService = {
     }) => apiFetch('/courses', { headers: auth }),
     findOne: (id: Course['id'], auth: {
         Authorization: string;
-    }) => apiFetch(`/courses/${id}`, { headers: auth }),
-    update: (id: Course['id'], body: CourseForm, auth: {
+    }): Promise<Course> => apiFetch(`/courses/${id}`, { headers: auth }),
+    update: (id: Course['id'], body: CourseFormData, auth: {
         Authorization: string;
     }) => apiFetch(`/courses/${id}`, {
         method: 'PATCH',

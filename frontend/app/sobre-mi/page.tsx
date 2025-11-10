@@ -11,7 +11,7 @@ export default function SobreMiPage() {
   if (profile) return (
     <div className="pt-16">
       {/* Sección de Bienvenida */}
-      <section className="flex flex-col items-center justify-start w-full bg-gradient-to-br from-[#3a3d40] to-[#181719] pt-10 sm:px-8 md:px-16 lg:px-32">
+      <section className="flex flex-col items-center justify-start w-full bg-linear-to-br from-[#3a3d40] to-[#181719] pt-10 sm:px-8 md:px-16 lg:px-32">
         <div className='flex flex-col items-center justify-start px-4 sm:px-8 md:px-16 lg:px-32 min-h-screen'>
           <ImagePorfile
             img={profile.photo_url}
@@ -58,18 +58,25 @@ export default function SobreMiPage() {
             {courses && (courses.map((course) => (
               <div
                 key={course.id}
-                className="bg-[#303841] shadow-lg rounded overflow-hidden transition-transform duration-300 hover:scale-105 h-80 flex flex-col"
+                className={`bg-[#303841] shadow-lg rounded overflow-hidden transition-transform duration-300 hover:scale-105 h-80 flex flex-col ${!course.img_url ? 'justify-center items-center' : ''}`}
               >
                 <div className="h-56 overflow-hidden">
-                  <Image
-                    src={course.img_url}
-                    alt={course.title}
-                    width={300}
-                    height={225}
-                    className="w-full h-full object-cover"
-                  />
+                  {course.img_url
+                    ? <Image
+                      src={course.img_url}
+                      alt={course.title}
+                      width={300}
+                      height={225}
+                      className="w-full h-full object-cover"
+                    />
+                    :
+                    <p className='flex justify-center items-center pt-32'>
+                      Imagen no disponible.
+                    </p>
+                  }
+
                 </div>
-                <div className="p-4 flex-grow flex items-center justify-center">
+                <div className="p-4 grow flex items-center justify-center">
                   <p className="text-white text-lg font-medium text-center">
                     &lt; {course.title} /&gt;
                   </p>
