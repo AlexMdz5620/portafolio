@@ -96,7 +96,7 @@ export async function updateCourse(id: string, prevState: ActionStateType, formD
         'Authorization': `Bearer ${token?.value}`
     };
 
-    const editCourse = await adminCourseService.update(id, course.data, auth);
+    const editCourse = await adminCourseService.update(+id, course.data, auth);
 
     const success = SuccessSchema.parse(editCourse);
     revalidatePath('/admin/courses');
@@ -125,7 +125,7 @@ export async function deleteCourse(id: string) {
         'Authorization': `Bearer ${token?.value}`
     };
 
-    const courseDelete = await adminCourseService.delete(id, auth);
+    const courseDelete = await adminCourseService.delete(+id, auth);
     const success = SuccessSchema.parse(courseDelete);
     revalidatePath('/admin/courses');
     revalidatePath('/');

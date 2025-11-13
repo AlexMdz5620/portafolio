@@ -28,7 +28,7 @@ import { Pencil, Plus, Trash2 } from 'lucide-react'
 export type CrudOperation = 'create' | 'edit' | 'delete';
 
 // Tipo para los datos que incluyen ID
-export interface WithId { id: string };
+export interface WithId { id: number };
 
 // Tipo para los datos del formulario
 export type FormData = Record<string, unknown>
@@ -47,7 +47,7 @@ export interface CrudDialogProps {
 
     // Operaciones - CAMBIADO PARA SERVER ACTIONS
     onSubmit: (formData: FormData) => Promise<{ success: boolean; msg: string; errors: string[] }>
-    onDelete?: (id: string) => Promise<{ success: boolean; msg: string; errors: string[] }>
+    onDelete?: (id: number) => Promise<{ success: boolean; msg: string; errors: string[] }>
 
     // Renderizado
     trigger?: React.ReactNode

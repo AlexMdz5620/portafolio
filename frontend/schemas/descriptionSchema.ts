@@ -1,12 +1,20 @@
 import z from 'zod';
 
-export const descriptioinSchema = z.object({
+// Schema para FormData
+export const descriptionFromSchema = z.object({
+    type: z.enum(['main', 'about'], 'El tipo es requerido.'),
+    name: z.string().optional(),
+    content: z.string().min(1, 'El contenido es requerido.'),
+})
+
+// Schema para la entidad completa
+export const descriptionSchema = z.object({
     id: z.number(),
     type: z.enum(['main', 'about']),
     name: z.string(),
     content: z.string(),
 });
 
-export type Description = z.infer<typeof descriptioinSchema>;
+export type DescriptionFormData = z.infer<typeof descriptionFromSchema>;
+export type Description = z.infer<typeof descriptionSchema>;
 export type Descriptions = Description[];
-export type DescriptionForm = Pick<Description, 'name' | 'type' | 'content'>

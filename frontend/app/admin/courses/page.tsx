@@ -4,7 +4,7 @@ import { createCourse, deleteCourse, updateCourse } from '@/actions/courses';
 import CrudFields from '@/components/CrudFields';
 import { CrudDialog, useCrudDialog } from '@/components/dialog/CrudDialog';
 import { Button } from '@/components/ui/button';
-import { CourseWithId } from '@/schemas/courseSchema';
+import { Course } from '@/schemas/courseSchema';
 import { useAdminStore } from '@/store/adminStore';
 import { ActionResponse } from '@/types/actions';
 import { formatDateForDisplay, objectToFormData } from '@/utils';
@@ -22,7 +22,7 @@ const courseFields = [
 
 export default function CoursePage() {
     const { profile } = useAdminStore();
-    const courses = (profile?.courses ?? []) as CourseWithId[];
+    const courses = (profile?.courses ?? []) as Course[];
 
     const { isOpen, operation, data, openCreate, openEdit, openDelete, close } = useCrudDialog({
         title: '',
@@ -32,9 +32,9 @@ export default function CoursePage() {
         complete_date: '',
     });
 
-    // 🆕 Wrappers tipados
+    // Wrappers tipados
     const handleSubmit = async (formDataObj: Record<string, unknown>): Promise<ActionResponse> => {
-        // 🆕 Validar que los datos coinciden con CourseFormData
+        // Validar que los datos coinciden con CourseFormData
         const formData = objectToFormData(formDataObj);
 
         if (operation === 'create') {
@@ -46,8 +46,8 @@ export default function CoursePage() {
         return { success: false, msg: 'Operación no válida', errors: ['Operación no reconocida'] };
     };
 
-    const handleDelete = async (id: string): Promise<ActionResponse> => {
-        return await deleteCourse(id);
+    const handleDelete = async (id: number): Promise<ActionResponse> => {
+        return await deleteCourse(`${id}`);
     };
 
     return (
