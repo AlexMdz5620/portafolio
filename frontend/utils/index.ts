@@ -3,7 +3,7 @@
  */
 export const formatDateForInput = (date: Date | string | null): string => {
     if (!date) return '';
-    
+
     const dateObj = typeof date === 'string' ? new Date(date) : date;
     return dateObj.toISOString().split('T')[0];
 };
@@ -13,7 +13,7 @@ export const formatDateForInput = (date: Date | string | null): string => {
  */
 export const formatDateForDisplay = (date: Date | string | null): string => {
     if (!date) return 'No completado';
-    
+
     const dateObj = typeof date === 'string' ? new Date(date) : date;
     return dateObj.toLocaleDateString('es-ES', {
         year: 'numeric',
@@ -54,3 +54,14 @@ export const formatDateForBackend = (dateString: string): string | null => {
     const date = new Date(dateString);
     return date.toISOString();
 };
+
+// 🆕 Función helper para convertir a FormData
+export const objectToFormData = (obj: Record<string, unknown>): FormData => {
+    const formData = new FormData();
+    Object.entries(obj).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+            formData.append(key, String(value));
+        }
+    });
+    return formData;
+}

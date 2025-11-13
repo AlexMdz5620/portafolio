@@ -1,4 +1,5 @@
-import type { Link } from '@/schemas/zodSchema'
+// import type { Link } from '@/schemas/zodSchema'
+import { Link } from '@/schemas/linkSchema';
 import { JSX } from 'react';
 import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa'
 import { FaX } from 'react-icons/fa6'

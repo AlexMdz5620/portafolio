@@ -15,21 +15,31 @@ interface ImageUploadProps {
 export default function ImageUpload({
     onImageUpload,
     existingImageUrl,
-    folder = 'portafolio/courses'
+    folder = 'portafolio'
 }: ImageUploadProps) {
     const [uploading, setUploading] = useState(false);
     const [imageUrl, setImageUrl] = useState(existingImageUrl || '');
     const [error, setError] = useState('');
 
     const uploadToCloudinary = async (file: File) => {
+        // 🆕 Verificar que las variables de entorno estén disponibles
+        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
+        const uploadPreset = process.env.NEXT_PUBLIC_UPLOAD_PRESET;
+
+        if (!cloudName || !uploadPreset) {
+            throw new Error('Configuración de Cloudinary no encontrada');
+        }
+
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('upload_preset', 'portafolio'); // ⚠️ Cambiar por tu preset
-        formData.append('folder', folder);
+        formData.append('upload_preset', uploadPreset);
+
+        const uploadFolder = folder || 'portafolio';
+        formData.append('folder', uploadFolder.replace(/^\//, ''));
 
         try {
             const response = await fetch(
-                `https://api.cloudinary.com/v1_1/dwx3oktt9/image/upload`, // ⚠️ Cambiar por tu cloud name
+                `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
                 {
                     method: 'POST',
                     body: formData,

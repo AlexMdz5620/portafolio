@@ -1,4 +1,4 @@
-import { Project } from '@/schemas/zodSchema';
+import { Project } from '@/schemas/projectSchema';
 import Image from 'next/image';
 
 interface ProjectCardProps {

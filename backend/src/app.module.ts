@@ -12,6 +12,8 @@ import { AuthModule } from './auth/auth.module';
 import { PublicModule } from './public/public.module';
 import { LinkModule } from './link/link.module';
 import { DescriptionModule } from './description/description.module';
+import { CloudinaryService } from './cloudinary/cloudinary.service';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -28,8 +30,9 @@ import { DescriptionModule } from './description/description.module';
     PublicModule,
     LinkModule,
     DescriptionModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, CloudinaryService],
 })
 export class AppModule {}

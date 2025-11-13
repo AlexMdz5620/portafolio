@@ -28,8 +28,6 @@ export const adminProfileService = {
         headers: auth,
         body: JSON.stringify(body)
     }),
-    // TODO:
-    // changeImg: () => apiFetch('upload-photo')
 }
 
 // Course
@@ -60,8 +58,6 @@ export const adminCourseService = {
         method: 'DELETE',
         headers: auth,
     }),
-    // TODO:
-    // uploadImgCourse: () => apiFetch(`/courses/${id}/upload-img`)
 }
 
 // Project

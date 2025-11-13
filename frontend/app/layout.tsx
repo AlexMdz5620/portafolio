@@ -5,7 +5,7 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import { publicService } from '@/service/publicService';
 import PublicHydrator from '@/components/utils/PublicHydrator';
-import ToastNotification from '@/components/ui/ToastNotification';
+import { Toaster } from '@/components/ui/sonner-toaster';
 
 const poppins = Poppins({
   weight: ['200', '400', '700'],
@@ -49,7 +49,7 @@ export default async function RootLayout({
           <Nav />
           <PublicHydrator initialData={initialData} />
           {children}
-          <ToastNotification />
+          <Toaster />
           <Footer />
         </body>
       </html>
@@ -61,6 +61,7 @@ export default async function RootLayout({
         <body>
           {children}
         </body>
+        <Toaster />
       </html>
     );
   }

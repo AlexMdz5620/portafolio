@@ -3,16 +3,10 @@
 import { courseFormSchema } from '@/schemas/courseSchema';
 import { SuccessSchema } from '@/schemas/zodSchema';
 import { adminCourseService } from '@/service/authService';
+import { ActionStateType } from '@/types/actions';
 import { formatDateForBackend, getFormDataValue } from '@/utils';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
-
-type ActionStateType = {
-    success: boolean;
-    msg: string;
-    errors: string[];
-    shouldReload: boolean;
-}
 
 export async function createCourse(prevState: ActionStateType, formData: FormData) {
     try {
@@ -31,7 +25,6 @@ export async function createCourse(prevState: ActionStateType, formData: FormDat
                 success: false,
                 msg: 'Error de validación',
                 errors: course.error.issues.map(issue => issue.message),
-                shouldReload: false,
             }
         }
 
@@ -43,7 +36,6 @@ export async function createCourse(prevState: ActionStateType, formData: FormDat
                 success: false,
                 msg: 'No autenticado',
                 errors: ['Token no encontrado'],
-                shouldReload: false,
             };
         }
 
@@ -60,7 +52,6 @@ export async function createCourse(prevState: ActionStateType, formData: FormDat
             success: true,
             msg: success.msg,
             errors: [],
-            shouldReload: true,
         }
     } catch (error) {
         console.error('Error en createCourse:', error);
@@ -68,7 +59,6 @@ export async function createCourse(prevState: ActionStateType, formData: FormDat
             success: false,
             msg: 'Error del servidor',
             errors: ['Error interno del servidor'],
-            shouldReload: false,
         };
     }
 }
@@ -88,7 +78,6 @@ export async function updateCourse(id: string, prevState: ActionStateType, formD
             success: false,
             msg: 'Error de validación',
             errors: course.error.issues.map(issue => issue.message),
-            shouldReload: false,
         }
     }
 
@@ -100,7 +89,6 @@ export async function updateCourse(id: string, prevState: ActionStateType, formD
             success: false,
             msg: 'No autenticado',
             errors: ['Token no encontrado'],
-            shouldReload: false,
         };
     }
 
@@ -118,7 +106,6 @@ export async function updateCourse(id: string, prevState: ActionStateType, formD
         success: true,
         msg: success.msg,
         errors: [],
-        shouldReload: true,
     }
 }
 
@@ -131,7 +118,6 @@ export async function deleteCourse(id: string) {
             success: false,
             msg: 'No autenticado',
             errors: ['Token no encontrado'],
-            shouldReload: false,
         };
     }
 
@@ -148,23 +134,5 @@ export async function deleteCourse(id: string) {
         success: true,
         msg: success.msg,
         errors: [''],
-        shouldReload: false,
     }
 }
-
-// export async function uploadImage(formData: FormData): Promise<string> {
-//     const cookieStore = await cookies();
-//     const token = cookieStore.get('access_token');
-
-//     if (!token) {
-//         return 'No autenticado';
-//     }
-
-//     const auth = {
-//         'Authorization': `Bearer ${token?.value}`
-//     };
-
-//     const updateImage = await adminCourseService.uploadImgCourse(formData, auth)
-
-//     return updateImage.secure_url
-// }

@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Course } from './entities/course.entity';
 import { User } from '../user/entities/user.entity';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 // import { Project } from '../project/entities/project.entity';
 // import { Tech } from '../tech/entities/tech.entity';
 
@@ -13,6 +14,7 @@ export class CourseService {
   constructor(
     @InjectRepository(Course)
     private readonly courseRepository: Repository<Course>,
+    private readonly cloudinaryService: CloudinaryService,
     // @InjectRepository(Project)
     // private readonly projectRepository: Repository<Project>,
     // @InjectRepository(Tech)
@@ -46,6 +48,21 @@ export class CourseService {
 
   async update(id: number, updateCourseDto: UpdateCourseDto, user: User) {
     const course = await this.findOne(id, user);
+
+    if (updateCourseDto.img_url && updateCourseDto.img_url !== course.img_url) {
+      // Eliminar la imagen anterior de Cloudinary
+      if (course.img_url) {
+        try {
+          const publicId = this.cloudinaryService.extractPublicIdFromUrl(
+            course.img_url,
+          );
+          await this.cloudinaryService.deleteImage(publicId);
+        } catch (error) {
+          console.error('Failed to delete old image from Cloudinary:', error);
+        }
+      }
+    }
+
     Object.assign(course, updateCourseDto);
     await this.courseRepository.save(course);
     return { msg: 'Curso actualizado correctamente.' };
@@ -53,6 +70,18 @@ export class CourseService {
 
   async remove(id: number, user: User) {
     const course = await this.findOne(id, user);
+
+    // Eliminar imagen de Cloudinary si existe
+    if (course.img_url) {
+      try {
+        const publicId = this.cloudinaryService.extractPublicIdFromUrl(
+          course.img_url,
+        );
+        await this.cloudinaryService.deleteImage(publicId);
+      } catch (error) {
+        console.error('Failed to delete image from Cloudinary:', error);
+      }
+    }
     await this.courseRepository.remove(course);
     return {
       msg: `El curso "${course.title}" ha sido eliminado correctamente.`,
