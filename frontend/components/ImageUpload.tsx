@@ -10,12 +10,14 @@ interface ImageUploadProps {
     onImageUpload: (url: string) => void;
     existingImageUrl?: string;
     folder?: string;
+    operation: "create" | "edit" | "delete" | "view"
 }
 
 export default function ImageUpload({
     onImageUpload,
     existingImageUrl,
-    folder = 'portafolio'
+    folder = 'portafolio',
+    operation
 }: ImageUploadProps) {
     const [uploading, setUploading] = useState(false);
     const [imageUrl, setImageUrl] = useState(existingImageUrl || '');
@@ -101,15 +103,17 @@ export default function ImageUpload({
                         width={120}
                         height={120}
                     />
-                    <Button
-                        type="button"
-                        variant="destructive"
-                        size="icon"
-                        className="absolute -top-2 -right-2 h-6 w-6 rounded-full cursor-pointer"
-                        onClick={removeImage}
-                    >
-                        <X className="h-4 w-4" />
-                    </Button>
+                    {operation !== 'view' && (
+                        <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            className="absolute -top-2 -right-2 h-6 w-6 rounded-full cursor-pointer"
+                            onClick={removeImage}
+                        >
+                            <X className="h-4 w-4" />
+                        </Button>
+                    )}
                 </div>
             ) : (
                 <div

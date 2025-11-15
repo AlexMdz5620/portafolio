@@ -24,7 +24,7 @@ export default function Footer() {
                 </p>
             </div>
             <div className="flex justify-center w-full max-w-4xl flex-wrap">
-                {profile.links && (profile.links.map(link => (
+                {profile.links && (profile.links.filter(link => link.active).map(link => (
                     <LinkFooter
                         key={link.id}
                         link={link}

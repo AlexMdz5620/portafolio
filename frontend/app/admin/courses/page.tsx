@@ -1,14 +1,15 @@
 'use client';
 
-import { createCourse, deleteCourse, updateCourse } from '@/actions/courses';
+import { createCourse, deleteCourse, updateCourse } from '@/actions/courses.action';
 import CrudFields from '@/components/CrudFields';
 import { CrudDialog, useCrudDialog } from '@/components/dialog/CrudDialog';
 import { Button } from '@/components/ui/button';
-import { Course } from '@/schemas/courseSchema';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Courses } from '@/schemas/courseSchema';
 import { useAdminStore } from '@/store/adminStore';
 import { ActionResponse } from '@/types/actions';
 import { formatDateForDisplay, objectToFormData } from '@/utils';
-import { PencilIcon, Plus, Trash2 } from 'lucide-react';
+import { Eye, PencilIcon, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 
 // Configuración de campos para cursos
@@ -22,9 +23,9 @@ const courseFields = [
 
 export default function CoursePage() {
     const { profile } = useAdminStore();
-    const courses = (profile?.courses ?? []) as Course[];
+    const courses = (profile?.courses ?? []) as Courses;
 
-    const { isOpen, operation, data, openCreate, openEdit, openDelete, close } = useCrudDialog({
+    const { isOpen, operation, data, openCreate, openView, openEdit, openDelete, close } = useCrudDialog({
         title: '',
         institute: '',
         img_url: '',
@@ -47,7 +48,7 @@ export default function CoursePage() {
     };
 
     const handleDelete = async (id: number): Promise<ActionResponse> => {
-        return await deleteCourse(`${id}`);
+        return await deleteCourse(id.toString());
     };
 
     return (
@@ -67,95 +68,117 @@ export default function CoursePage() {
                             onClick={openCreate}
                         >
                             <Plus className="h-4 w-4" />
-
                             Nuevo Curso
                         </Button>
                     </div>
-                    {courses.length > 0
-                        ? <div className="py-2 align-middle sm:px-6 lg:px-8 bg-gray-900 text-white rounded-3xl">
-                            <table className="min-w-full divide-y divide-gray-300">
-                                <thead>
-                                    <tr>
-                                        <th
-                                            scope='col'
-                                            className="py-3.5 pl-4 pr-3 text-sm font-semibold sm:pl-0"
-                                        >Titulo</th>
-                                        <th
-                                            scope='col'
-                                            className="py-3.5 pl-4 pr-3 text-sm font-semibold sm:pl-0"
-                                        >Descripción</th>
-                                        <th
-                                            scope='col'
-                                            className="py-3.5 pl-4 pr-3 text-sm font-semibold sm:pl-0"
-                                        >Institución</th>
-                                        <th
-                                            scope='col'
-                                            className="py-3.5 pl-4 pr-3 text-sm font-semibold sm:pl-0"
-                                        >Certificado</th>
-                                        <th
-                                            scope='col'
-                                            className="py-3.5 pl-4 pr-3 text-sm font-semibold sm:pl-0"
-                                        >Fecha de Finalización</th>
-                                        <th
-                                            scope='col'
-                                            className="py-3.5 pl-4 pr-3 text-sm font-semibold sm:pl-0"
-                                        >Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-200">
-                                    {courses.map(c => (
-                                        <tr key={c.id} >
-                                            <td className="py-4 pl-4 pr-3 text-sm font-medium sm:pl-0">{c.title}</td>
-                                            <td className="px-3 py-4 text-sm text-gray-500">{c.description}</td>
-                                            <td className="px-3 py-4 text-sm text-gray-500">{c.institute}</td>
-                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                                {c.img_url
-                                                    ? <Image
+                    <div className="py-6 align-middle sm:px-6 lg:px-8 bg-gray-900 text-white rounded-3xl space-y-6 hidden md:block">
+                        {courses.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-9">
+                                {courses.map((c) => (
+                                    <Card
+                                        key={c.id}
+                                        className="w-full hover:shadow-lg transition-shadow duration-200 flex flex-col bg-[#121212] border border-white/10 rounded-xl text-white"
+                                    >
+                                        {/* HEADER */}
+                                        <CardHeader className="pb-2">
+                                            <CardTitle className="text-lg font-semibold wrap-break-word max-w-[70%]">
+                                                {c.title}
+                                            </CardTitle>
+                                            <p className="text-sm opacity-75">{c.institute}</p>
+                                        </CardHeader>
+
+                                        {/* CONTENT */}
+                                        <CardContent className="flex-1 pt-0">
+                                            {/* Descripción */}
+                                            {c.description ?
+                                                <p className="text-sm leading-relaxed opacity-90 wrap-break-word">
+                                                    {(() => {
+                                                        const maxWords = 20;
+                                                        const maxChars = 80;
+                                                        let desc = c.description;
+                                                        // Limita palabras
+                                                        const words = desc.split(" ");
+                                                        if (words.length > maxWords) {
+                                                            desc = words.slice(0, maxWords).join(" ");
+                                                        }
+                                                        // Limita caracteres
+                                                        if (desc.length > maxChars) {
+                                                            desc = desc.slice(0, maxChars) + "...";
+                                                        }
+                                                        return desc.endsWith(".") ? desc : desc + ".";
+                                                    })()}
+                                                </p>
+                                                : <p className='text-sm leading-relaxed opacity-90 wrap-break-word'>Sin descripción</p>
+                                            }
+
+                                            {/* Imagen */}
+                                            <div className="mt-3">
+                                                {c.img_url ? (
+                                                    <Image
                                                         src={c.img_url}
-                                                        alt={`Imágen del certificado de ${c.title}`}
-                                                        width={120}
-                                                        height={120}
-                                                        priority
+                                                        alt={`Certificado de ${c.title}`}
+                                                        width={300}
+                                                        height={200}
+                                                        className="rounded-lg border border-white/10 object-cover w-full h-auto"
                                                     />
-                                                    : "Imagen no disponible."
-                                                }
-                                            </td>
-                                            <td className="px-3 py-4 text-sm text-gray-500">
+                                                ) : (
+                                                    <p className="text-sm opacity-60 italic">
+                                                        Sin imagen de certificado
+                                                    </p>
+                                                )}
+                                            </div>
+
+                                            {/* Fecha */}
+                                            <div className="text-sm opacity-80 pt-1">
+                                                <span className="font-semibold">Finalizado:</span>{" "}
                                                 {c.complete_date
                                                     ? formatDateForDisplay(c.complete_date)
-                                                    : "En curso"
-                                                }
-                                            </td>
-                                            <td>
-                                                <div className='flex gap-5 justify-end items-center'>
-                                                    <Button
-                                                        variant='ghost'
-                                                        className='cursor-pointer hover:bg-gray-700 hover:text-white duration-300'
-                                                        onClick={() => openEdit(c)}
-                                                    >
-                                                        <PencilIcon className='h-5 w-5' />
-                                                    </Button>
-                                                    <Button
-                                                        variant='destructive'
-                                                        className='cursor-pointer hover:bg-gray-700 hover:text-white duration-300'
-                                                        onClick={() => openDelete(c)}
-                                                    >
-                                                        <Trash2 className='h-5 w-5' />
-                                                    </Button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                        : <div className="text-center py-12 align-middle sm:px-6 lg:px-8 bg-gray-900 text-white rounded-3xl w-2xl">
-                            <h3 className="text-lg font-medium mb-2 pb-4">No se han encontrado cursos</h3>
-                            <p className="text-muted-foreground mb-2">
-                                Aún no hay cursos en tu portafolio.
-                            </p>
-                        </div>
-                    }
+                                                    : "En curso"}
+                                            </div>
+                                        </CardContent>
+
+                                        {/* FOOTER */}
+                                        <CardFooter className="flex justify-end gap-3 border-t border-white/10 pt-3">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => openView(c)}
+                                                className="hover:scale-105 transition-transform"
+                                            >
+                                                <Eye className="h-4 w-4" />
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => openEdit(c)}
+                                                className="hover:scale-105 transition-transform"
+                                            >
+                                                <PencilIcon className="h-4 w-4" />
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => openDelete(c)}
+                                                className="hover:scale-105 transition-transform text-red-600 hover:text-white hover:bg-red-600"
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </CardFooter>
+                                    </Card>
+                                ))}
+
+                            </div>
+                        ) : (
+                            <div className="text-center py-12 sm:px-6 lg:px-8 bg-gray-900 text-white rounded-3xl">
+                                <h3 className="text-lg font-medium mb-2 pb-4">
+                                    No se han encontrado cursos
+                                </h3>
+                                <p className="text-muted-foreground mb-2">
+                                    Aún no hay cursos en tu portafolio.
+                                </p>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
@@ -179,6 +202,7 @@ export default function CoursePage() {
                         formData={formData}
                         setFormData={setFormData}
                         folder="portafolio/courses"
+                        operation={operation}
                     />
                 )}
             </CrudDialog>

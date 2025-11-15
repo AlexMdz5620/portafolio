@@ -12,7 +12,7 @@ export async function apiFetch<T>(
     });
     const json = await res.json();
     if (!res.ok) {
-        throw new Error(json.message);
+        throw new Error(json.msg);
     }
     return json;
 }

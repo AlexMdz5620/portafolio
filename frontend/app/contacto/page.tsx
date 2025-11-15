@@ -1,8 +1,13 @@
+"use client";
 
 import ContactForm from '@/components/form/ContactForm';
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import SocialNetLink from '@/components/ui/Link';
+import { usePublicStore } from '@/store/publicStore';
 
 export default function ContactoPage() {
+    const { profile } = usePublicStore();
+    const links = profile?.links;
+
     return (
         <div className="pt-16 min-h-screen bg-linear-to-b from-[#3a3d40] to-[#181719]">
             <div className="max-w-6xl mx-auto px-4 py-16">
@@ -20,7 +25,7 @@ export default function ContactoPage() {
                     {/* Formulario de Contacto */}
                     <div className="bg-[#303841] p-8 rounded-lg shadow-lg">
                         <h2 className="text-2xl font-bold text-white mb-6">Envíame un mensaje</h2>
-                        <ContactForm />                        
+                        <ContactForm />
                     </div>
 
                     {/* Información de Contacto */}
@@ -29,7 +34,20 @@ export default function ContactoPage() {
                             <h2 className="text-2xl font-bold text-white mb-6">Información de Contacto</h2>
 
                             <div className="space-y-4">
-                                <div className="flex items-center">
+                                {links && links.filter(link => link.active).map(link => (
+                                    <div
+                                        key={link.link} 
+                                        className="flex items-center">
+                                        <SocialNetLink
+                                            key={link.id}
+                                            link={link}
+                                        >
+                                            <h3 className="text-white font-semibold hover:text-[#be3144] duration-150 px-2">{link.name}</h3>
+
+                                        </SocialNetLink>
+                                    </div>
+                                ))}
+                                {/* <div className="flex items-center">
                                     <a
                                         href="https://github.com/AlexMdz5620"
                                         target="_blank"
@@ -41,9 +59,9 @@ export default function ContactoPage() {
                                             <h3 className="text-white font-semibold">GitHub</h3>
                                         </div>
                                     </a>
-                                </div>
+                                </div> */}
 
-                                <div className="flex items-center">
+                                {/* <div className="flex items-center">
                                     <a
                                         href="https://www.linkedin.com/in/manuel-alejandro-mendoza-c%C3%A1rdenas-133967274/"
                                         target="_blank"
@@ -58,7 +76,7 @@ export default function ContactoPage() {
                                             </h3>
                                         </div>
                                     </a>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 

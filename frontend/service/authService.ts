@@ -1,11 +1,11 @@
 import { apiFetch } from './api';
 import { ChangePassForm } from '@/schemas/zodSchema';
-import { User, UserForm } from '@/schemas/userSchema';
+import { User, UserFormData,  } from '@/schemas/userSchema';
 import { Course, CourseFormData } from '@/schemas/courseSchema';
-import { Project, ProjectForm } from '@/schemas/projectSchema';
-import { Tech, TechForm } from '@/schemas/techSchema';
-import { Link, LinkForm } from '@/schemas/linkSchema';
-import { Description, DescriptionForm } from '@/schemas/descriptionSchema';
+import { Project, ProjectFormData,  } from '@/schemas/projectSchema';
+import { Tech, TechFormData,  } from '@/schemas/techSchema';
+import { Link, LinkFormData,  } from '@/schemas/linkSchema';
+import { Description, DescriptionFormData,  } from '@/schemas/descriptionSchema';
 
 // Profile
 export const adminProfileService = {
@@ -14,7 +14,7 @@ export const adminProfileService = {
     }) => apiFetch<User>('/users/me', {
         headers: auth,
     }),
-    updateProfile: (body: UserForm, auth: {
+    updateProfile: (body: UserFormData, auth: {
         Authorization: string;
     }) => apiFetch<User>('/users/me', {
         method: 'POST',
@@ -62,7 +62,7 @@ export const adminCourseService = {
 
 // Project
 export const adminProjectService = {
-    create: (body: ProjectForm, auth: {
+    create: (body: ProjectFormData, auth: {
         Authorization: string;
     }) => apiFetch('/projects', {
         method: 'POST',
@@ -75,7 +75,7 @@ export const adminProjectService = {
     findOne: (id: Project['id'], auth: {
         Authorization: string;
     }) => apiFetch(`/projects/${id}`, { headers: auth }),
-    update: (id: Project['id'], body: ProjectForm, auth: {
+    update: (id: Project['id'], body: ProjectFormData, auth: {
         Authorization: string;
     }) => apiFetch(`/projects/${id}`, {
         method: 'PATCH',
@@ -99,7 +99,7 @@ export const adminProjectService = {
 
 // Tech
 export const adminTechService = {
-    create: (body: TechForm, auth: {
+    create: (body: TechFormData, auth: {
         Authorization: string;
     }) => apiFetch('/techs', {
         method: 'POST',
@@ -112,7 +112,7 @@ export const adminTechService = {
     findOne: (id: Tech['id'], auth: {
         Authorization: string;
     }) => apiFetch(`/techs/${id}`, { headers: auth }),
-    update: (id: Tech['id'], body: TechForm, auth: {
+    update: (id: Tech['id'], body: TechFormData, auth: {
         Authorization: string;
     }) => apiFetch(`/techs/${id}`, {
         method: 'PATCH',
@@ -129,7 +129,7 @@ export const adminTechService = {
 
 // Link
 export const adminLinkService = {
-    create: (body: LinkForm, auth: {
+    create: (body: LinkFormData, auth: {
         Authorization: string;
     }) => apiFetch('/links', {
         method: 'POST',
@@ -142,7 +142,7 @@ export const adminLinkService = {
     findOne: (id: Link['id'], auth: {
         Authorization: string;
     }) => apiFetch(`/links/${id}`, { headers: auth }),
-    update: (id: Link['id'], body: LinkForm, auth: {
+    update: (id: Link['id'], body: LinkFormData, auth: {
         Authorization: string;
     }) => apiFetch(`/links/${id}`, {
         method: 'PATCH',
@@ -159,7 +159,7 @@ export const adminLinkService = {
 
 // Description
 export const adminDescriptionService = {
-    create: (body: DescriptionForm, auth: {
+    create: (body: DescriptionFormData, auth: {
         Authorization: string;
     }) => apiFetch('/description', {
         method: 'POST',
@@ -172,7 +172,7 @@ export const adminDescriptionService = {
     getOne: (id: Description['id'], auth: {
         Authorization: string;
     }) => apiFetch(`/description/${id}`, { headers: auth }),
-    update: (id: Description['id'], body: DescriptionForm, auth: {
+    update: (id: Description['id'], body: DescriptionFormData, auth: {
         Authorization: string;
     }) => apiFetch(`/description/${id}`, {
         method: 'PATCH',

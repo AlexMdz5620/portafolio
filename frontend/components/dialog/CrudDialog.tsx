@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Pencil, Plus, Trash2 } from 'lucide-react'
 
-export type CrudOperation = 'create' | 'edit' | 'delete';
+export type CrudOperation = 'create' | 'edit' | 'delete' | 'view';
 
 // Tipo para los datos que incluyen ID
 export interface WithId { id: number };
@@ -45,7 +45,7 @@ export interface CrudDialogProps {
     isOpen?: boolean
     onOpenChange?: (open: boolean) => void
 
-    // Operaciones - CAMBIADO PARA SERVER ACTIONS
+    // Operaciones
     onSubmit: (formData: FormData) => Promise<{ success: boolean; msg: string; errors: string[] }>
     onDelete?: (id: number) => Promise<{ success: boolean; msg: string; errors: string[] }>
 
@@ -103,7 +103,7 @@ export function CrudDialog({
 
     // Actualizar valores del formulario cuando cambian los datos
     useEffect(() => {
-        if (operation === 'edit' && data) {
+        if ((operation === 'view' || operation === 'edit') && data) {
             setFormData(data);
         } else if (operation === 'create') {
             setFormData(defaultValues || {});
@@ -276,7 +276,7 @@ export function CrudDialog({
                         >
                             {cancelButtonText}
                         </Button>
-                        {
+                        {operation !== 'view' &&
                             <Button
                                 type="submit"
                                 disabled={isSubmittingState}
@@ -308,6 +308,11 @@ export function useCrudDialog(defaultValues?: Record<string, unknown>) {
         setData(itemData);
         setIsOpen(true);
     }
+    const openView = (itemData: Record<string, unknown> & Partial<WithId>) => {
+        setOperation('view')
+        setData(itemData)
+        setIsOpen(true)
+    }
     const openDelete = (itemData: Record<string, unknown> & Partial<WithId>) => {
         setOperation('delete');
         setData(itemData);
@@ -325,6 +330,7 @@ export function useCrudDialog(defaultValues?: Record<string, unknown>) {
         data,
         openCreate,
         openEdit,
+        openView,
         openDelete,
         close,
         defaultValues,
