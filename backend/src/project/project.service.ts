@@ -58,9 +58,11 @@ export class ProjectService {
 
     if (updateProjectDto.techIds) {
       // Traemos las tecnologías actuales y las nuevas seleccionadas
-      const newTechs = await this.techRepository.findBy({
-        id: In(updateProjectDto.techIds),
-      });
+      const newTechs = updateProjectDto.techIds
+        ? await this.techRepository.find({
+            where: { id: In(updateProjectDto.techIds) },
+          })
+        : [];
 
       // Si quieres reemplazar totalmente el arreglo:
       project.techs = newTechs;

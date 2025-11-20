@@ -1,4 +1,5 @@
 import z from 'zod';
+import { techSchema } from './techSchema';
 
 export const projectFormSchema = z.object({
     title: z.string().min(1, 'El nombre del proyecto es requerido.'),
@@ -8,8 +9,7 @@ export const projectFormSchema = z.object({
     type: z.string().optional(),
     featured: z.boolean().default(false),
     description: z.string().optional(),
-    created_at: z.date().min(1, 'La fecha de finalización del proyecto es requerida.'),
-    techId: z.number().array(),
+    techIds: z.array(z.number()),
 });
 
 export const projectSchema = z.object({
@@ -21,8 +21,7 @@ export const projectSchema = z.object({
     type: z.string(),
     featured: z.boolean(),
     description: z.string(),
-    created_at: z.date(),
-    techId: z.number().array(),
+    techs: z.array(techSchema),
 });
 
 export type ProjectFormData = z.infer<typeof projectFormSchema>;

@@ -55,13 +55,44 @@ export const formatDateForBackend = (dateString: string): string | null => {
     return date.toISOString();
 };
 
-// 🆕 Función helper para convertir a FormData
-export const objectToFormData = (obj: Record<string, unknown>): FormData => {
+// Función helper para convertir a FormData
+export function objectToFormData(obj: Record<string, unknown>): FormData {
     const formData = new FormData();
+
     Object.entries(obj).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
-            formData.append(key, String(value));
+            if (Array.isArray(value)) {
+                // 🆕 CRÍTICO: Para arrays, crear una entrada por cada elemento
+                value.forEach(item => {
+                    formData.append(key, String(item));
+                });
+            } else {
+                formData.append(key, String(value));
+            }
         }
     });
+
     return formData;
+}
+
+/**
+ * Helper para modificar el tipo del arrego a number, específico para los techids de los proyectos
+ * @param formData 
+ * @param key 
+ * @returns 
+ */
+export function getFormDataArray(formData: FormData, key: string): number[] {
+    if (!formData.has(key)) {
+        console.error(`Campo ${key} no encontrado en FormData, devolviendo array vacío`);
+        return [];
+    }
+
+    const values = formData.getAll(key);
+
+    const result = values
+        .filter((value): value is string => typeof value === 'string' && value !== '')
+        .map(value => parseInt(value, 10))
+        .filter(num => !isNaN(num));
+
+    return result;
 }

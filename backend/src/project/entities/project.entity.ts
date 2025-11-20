@@ -26,7 +26,7 @@ export class Project {
   @Column({ type: 'varchar', length: 500 })
   demo_url: string;
 
-  @Column({ type: 'varchar', length: 60, default: 'frontend' })
+  @Column({ type: 'varchar', length: 60 })
   type: string;
 
   @Column({ type: 'boolean', default: false })

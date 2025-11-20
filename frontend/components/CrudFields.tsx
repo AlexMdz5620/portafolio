@@ -3,19 +3,18 @@
 import ImageUpload from './ImageUpload';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
-// import { Checkbox } from './ui/checkbox';
+import { Checkbox } from './ui/checkbox';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Label } from './ui/label';
-// import { FormDescription } from './ui/form';
 
 export type TypeFields = {
     name: string
     label: string
-    type: 'text' | 'textarea' | 'date' | 'image' | 'number' | 'radio' | 'select'
+    type: 'text' | 'textarea' | 'date' | 'image' | 'number' | 'radio' | 'select' | 'checkbox'
     required?: boolean
-    options?: { value: string; label: string }[] // Para radio, select
-    multiple?: boolean // Para checkbox (selección múltiple)
+    options?: { value: string; label: string }[]
+    multiple?: boolean
     placeholder?: string
 }[]
 
@@ -35,6 +34,34 @@ export default function CrudFields({ fields, formData, setFormData, operation, f
         setFormData({
             ...formData,
             [name]: value,
+        });
+    }
+
+    // Función específica para checkboxes (múltiples valores)
+    const handleCheckboxChange = (fieldName: string, optionValue: string, checked: boolean) => {
+        const currentValue = formData[fieldName];
+        let newValue: string[];
+
+        // Inicializar como array si no existe
+        if (!currentValue || !Array.isArray(currentValue)) {
+            newValue = [];
+        } else {
+            newValue = [...currentValue as string[]];
+        }
+
+        if (checked) {
+            // Agregar valor si no existe
+            if (!newValue.includes(optionValue)) {
+                newValue.push(optionValue);
+            }
+        } else {
+            // Remover valor
+            newValue = newValue.filter(val => val !== optionValue);
+        }
+
+        setFormData({
+            ...formData,
+            [fieldName]: newValue,
         });
     }
 
@@ -71,6 +98,17 @@ export default function CrudFields({ fields, formData, setFormData, operation, f
         }
 
         return undefined;
+    }
+
+    // Función para obtener valores de checkbox (array)
+    const getCheckboxValues = (fieldName: string): string[] => {
+        const value = formData[fieldName];
+
+        if (Array.isArray(value)) {
+            return value as string[];
+        }
+
+        return [];
     }
 
     const renderField = (field: typeof fields[0]) => {
@@ -144,7 +182,6 @@ export default function CrudFields({ fields, formData, setFormData, operation, f
                 return (
                     <div
                         className="focus:outline-none focus:ring-0"
-                        // 🆕 Prevenir cualquier comportamiento de foco
                         onFocus={(e) => {
                             e.stopPropagation();
                             e.preventDefault();
@@ -183,6 +220,52 @@ export default function CrudFields({ fields, formData, setFormData, operation, f
                         </SelectContent>
                     </Select>
                 )
+
+            case 'checkbox':
+                if (!field.options) {
+                    const boolValue = !!formData[field.name]; // Convertir a booleano
+                    return (
+                        <div className="flex items-center justify-center space-x-2">
+                            <Checkbox
+                                id={field.name}
+                                checked={boolValue}
+                                onCheckedChange={(checked) =>
+                                    handleFieldChange(field.name, checked)
+                                }
+                                disabled={isView}
+                                className="text-blue-600 border-gray-400 data-[state=checked]:bg-blue-600"
+                            />
+                        </div>
+                    );
+                }
+
+                const checkboxValues = getCheckboxValues(field.name);
+
+                return (
+                    <div className="space-y-3">
+                        {field.options.map((option) => (
+                            <div key={option.value} className="flex flex-row  space-x-2">
+                                <Checkbox
+                                    id={`${field.name}-${option.value}`}
+                                    name={field.name}
+                                    value={option.value}
+                                    checked={checkboxValues.includes(option.value)}
+                                    onCheckedChange={(checked) =>
+                                        handleCheckboxChange(field.name, option.value, checked as boolean)
+                                    }
+                                    disabled={isView}
+                                    className="text-blue-600 border-gray-400 data-[state=checked]:bg-blue-600"
+                                />
+                                <Label
+                                    htmlFor={`${field.name}-${option.value}`}
+                                    className="text-sm text-gray-300 cursor-pointer"
+                                >
+                                    {option.label}
+                                </Label>
+                            </div>
+                        ))}
+                    </div>
+                );
 
             default:
                 return null

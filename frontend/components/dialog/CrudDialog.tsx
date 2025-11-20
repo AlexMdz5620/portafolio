@@ -24,6 +24,7 @@ import {
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Pencil, Plus, Trash2 } from 'lucide-react'
+import { Tech } from '@/schemas/techSchema';
 
 export type CrudOperation = 'create' | 'edit' | 'delete' | 'view';
 
@@ -305,7 +306,16 @@ export function useCrudDialog(defaultValues?: Record<string, unknown>) {
     }
     const openEdit = (itemData: Record<string, unknown> & Partial<WithId>) => {
         setOperation('edit');
-        setData(itemData);
+
+        const transformedData = {
+            ...itemData,
+            // Si viene techs (array de objetos), convertirlo a techIds (array de strings)
+            techIds: itemData.techs && Array.isArray(itemData.techs) ?
+                itemData.techs.map((tech: Tech) => tech.id.toString()) :
+                itemData.techIds || []
+        };
+
+        setData(transformedData);
         setIsOpen(true);
     }
     const openView = (itemData: Record<string, unknown> & Partial<WithId>) => {

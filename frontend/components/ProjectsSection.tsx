@@ -18,7 +18,7 @@ export default function ProjectsSection() {
                 </h2>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto mb-24 px-4">
-                    {projects.map(project => (
+                    {projects.filter(project => project.featured === true).map(project => (
                         <ProjectCard key={project.id} project={project} />
                     ))}
                 </div>

@@ -29,7 +29,7 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
 
     if (authStatus === 'checking') {
         return (
-            <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-[#3a3d40] to-[#181719]">
+            <div className="flex justify-center items-center min-h-screen bg-linear-to-br from-[#3a3d40] to-[#181719]">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#be3144]"></div>
             </div>
         );

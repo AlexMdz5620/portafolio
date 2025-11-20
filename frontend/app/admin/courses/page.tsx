@@ -1,7 +1,7 @@
 'use client';
 
 import { createCourse, deleteCourse, updateCourse } from '@/actions/courses.action';
-import CrudFields from '@/components/CrudFields';
+import CrudFields, { TypeFields } from '@/components/CrudFields';
 import { CrudDialog, useCrudDialog } from '@/components/dialog/CrudDialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,7 +13,7 @@ import { Eye, PencilIcon, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 
 // Configuración de campos para cursos
-const courseFields = [
+const courseFields: TypeFields = [
     { name: 'title', label: 'Título', type: 'text' as const, required: true },
     { name: 'institute', label: 'Institución', type: 'text' as const, required: true },
     { name: 'description', label: 'Descripción', type: 'textarea' as const },
@@ -41,7 +41,7 @@ export default function CoursePage() {
         if (operation === 'create') {
             return await createCourse({ success: false, msg: '', errors: [] }, formData);
         } else if (operation === 'edit' && data?.id) {
-            return await updateCourse(data.id.toString(), { success: false, msg: '', errors: [] }, formData);
+            return await updateCourse(data.id, { success: false, msg: '', errors: [] }, formData);
         }
 
         return { success: false, msg: 'Operación no válida', errors: ['Operación no reconocida'] };

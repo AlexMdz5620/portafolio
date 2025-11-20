@@ -1,11 +1,11 @@
 import { apiFetch } from './api';
 import { ChangePassForm } from '@/schemas/zodSchema';
 import { User, UserFormData,  } from '@/schemas/userSchema';
-import { Course, CourseFormData } from '@/schemas/courseSchema';
-import { Project, ProjectFormData,  } from '@/schemas/projectSchema';
-import { Tech, TechFormData,  } from '@/schemas/techSchema';
-import { Link, LinkFormData,  } from '@/schemas/linkSchema';
-import { Description, DescriptionFormData,  } from '@/schemas/descriptionSchema';
+import { Course, CourseFormData, Courses } from '@/schemas/courseSchema';
+import { Project, ProjectFormData, Projects,  } from '@/schemas/projectSchema';
+import { Tech, TechFormData, Techs,  } from '@/schemas/techSchema';
+import { Link, LinkFormData, Links,  } from '@/schemas/linkSchema';
+import { Description, DescriptionFormData, Descriptions,  } from '@/schemas/descriptionSchema';
 
 // Profile
 export const adminProfileService = {
@@ -41,7 +41,7 @@ export const adminCourseService = {
     }),
     findAll: (auth: {
         Authorization: string;
-    }) => apiFetch('/courses', { headers: auth }),
+    }): Promise<Courses> => apiFetch('/courses', { headers: auth }),
     findOne: (id: Course['id'], auth: {
         Authorization: string;
     }): Promise<Course> => apiFetch(`/courses/${id}`, { headers: auth }),
@@ -71,14 +71,14 @@ export const adminProjectService = {
     }),
     findAll: (auth: {
         Authorization: string;
-    }) => apiFetch('/projects', { headers: auth }),
+    }): Promise<Projects> => apiFetch('/projects', { headers: auth }),
     findOne: (id: Project['id'], auth: {
         Authorization: string;
-    }) => apiFetch(`/projects/${id}`, { headers: auth }),
+    }): Promise<Project> => apiFetch(`/projects/${id}`, { headers: auth }),
     update: (id: Project['id'], body: ProjectFormData, auth: {
         Authorization: string;
     }) => apiFetch(`/projects/${id}`, {
-        method: 'PATCH',
+        method: 'PUT',
         headers: auth,
         body: JSON.stringify(body),
     }),
@@ -88,7 +88,7 @@ export const adminProjectService = {
         method: 'DELETE',
         headers: auth,
     }),
-    removeTech: (id: Project['id'], body: Project['techId'], auth: {
+    removeTech: (id: Project['id'], body: Tech['id'], auth: {
         Authorization: string;
     }) => apiFetch(`/projects/${id}/remove-tech`, {
         method: 'PATCH',
@@ -108,7 +108,7 @@ export const adminTechService = {
     }),
     findAll: (auth: {
         Authorization: string;
-    }) => apiFetch('/techs', { headers: auth }),
+    }): Promise<Techs> => apiFetch('/techs', { headers: auth }),
     findOne: (id: Tech['id'], auth: {
         Authorization: string;
     }) => apiFetch(`/techs/${id}`, { headers: auth }),
@@ -138,7 +138,7 @@ export const adminLinkService = {
     }),
     findAll: (auth: {
         Authorization: string;
-    }) => apiFetch('/links', { headers: auth }),
+    }): Promise<Links> => apiFetch('/links', { headers: auth }),
     findOne: (id: Link['id'], auth: {
         Authorization: string;
     }) => apiFetch(`/links/${id}`, { headers: auth }),
@@ -168,7 +168,7 @@ export const adminDescriptionService = {
     }),
     getAll: (auth: {
         Authorization: string;
-    }) => apiFetch('/description', { headers: auth }),
+    }): Promise<Descriptions> => apiFetch('/description', { headers: auth }),
     getOne: (id: Description['id'], auth: {
         Authorization: string;
     }) => apiFetch(`/description/${id}`, { headers: auth }),

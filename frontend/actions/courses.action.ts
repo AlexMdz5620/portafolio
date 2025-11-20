@@ -63,7 +63,7 @@ export async function createCourse(prevState: ActionStateType, formData: FormDat
     }
 }
 
-export async function updateCourse(id: string, prevState: ActionStateType, formData: FormData) {
+export async function updateCourse(id: number, prevState: ActionStateType, formData: FormData) {
     const completeDateValue = getFormDataValue(formData, 'complete_date');
     const course = courseFormSchema.safeParse({
         title: getFormDataValue(formData, 'title'),
