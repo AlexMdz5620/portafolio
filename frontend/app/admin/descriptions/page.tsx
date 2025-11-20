@@ -5,29 +5,27 @@ import CrudFields from '@/components/CrudFields';
 import DescrCard from '@/components/description/DescrCard';
 import { CrudDialog, useCrudDialog } from '@/components/dialog/CrudDialog';
 import { Button } from '@/components/ui/button';
-import { Descriptions } from '@/schemas/descriptionSchema';
 import { useAdminStore } from '@/store/adminStore';
 import { ActionResponse } from '@/types/actions';
 import { objectToFormData } from '@/utils';
 import { Plus } from 'lucide-react';
 
-const descriptionFields = [
-  { name: 'name', label: 'Título', type: 'text' as const, required: true },
-  { name: 'content', label: 'Descripción', type: 'textarea' as const, required: true },
-  {
-    name: 'type',
-    label: 'Tipo de Descripción',
-    type: 'radio' as const,
-    options: [
-      { value: 'main', label: 'Página de Inicio' },
-      { value: 'about', label: 'Página "Sobre Mi"' },
-    ]
-  },
-];
 
 export default function DescriptionPage() {
-  const { profile } = useAdminStore();
-  const descriptions = (profile?.descriptions ?? []) as Descriptions;
+  const { descriptions } = useAdminStore();
+  const descriptionFields = [
+    { name: 'name', label: 'Título', type: 'text' as const, required: true },
+    { name: 'content', label: 'Descripción', type: 'textarea' as const, required: true },
+    {
+      name: 'type',
+      label: 'Tipo de Descripción',
+      type: 'radio' as const,
+      options: [
+        { value: 'main', label: 'Página de Inicio' },
+        { value: 'about', label: 'Página "Sobre Mi"' },
+      ]
+    },
+  ];
 
   const { isOpen, operation, data, openCreate, openEdit, openDelete, openView, close } = useCrudDialog({
     name: '',
@@ -71,7 +69,7 @@ export default function DescriptionPage() {
               Nueva Descripción
             </Button>
           </div>
-          {descriptions.length > 0
+          {descriptions && descriptions.length > 0
             ? <div className="py-6 align-middle sm:px-6 lg:px-8 bg-gray-900 text-white rounded-3xl space-y-6">
               <div className='space-y-6'>
                 <h2 className="text-3xl font-bold tracking-tight">

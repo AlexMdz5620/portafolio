@@ -12,7 +12,7 @@ import { Eye, PencilIcon, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 
 export default function PorjectPage() {
-  const { profile, projects } = useAdminStore();
+  const { projects, techs } = useAdminStore();
   const projectsFields: TypeFields = [
     {
       name: 'title',
@@ -68,7 +68,7 @@ export default function PorjectPage() {
       placeholder: 'Seleciona las tecnologías que usaste en el proyecto',
       required: true,
       multiple: true,
-      options: profile?.techs?.map(t => {
+      options: techs?.map(t => {
         return {
           value: t.id.toString(),
           label: t.name
@@ -89,7 +89,6 @@ export default function PorjectPage() {
   });
 
   const handleSubmit = async (formDataObj: Record<string, unknown>): Promise<ActionResponse> => {
-    // Validar que los datos coinciden con CourseFormData
     const formData = objectToFormData(formDataObj);
 
     if (operation === 'create') {
@@ -222,37 +221,6 @@ export default function PorjectPage() {
                           </p>
                         }
                       </div>
-                      {/* <div className='mt-3'>
-                          {pro.technologies && pro.technologies.length > 0 ? (
-                            <ul className="flex flex-wrap gap-2">
-                              {pro.technologies.map((tech) => (
-                                <li
-                                  key={tech.id}
-                                  className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
-                                >
-                                  {tech.name}
-                                </li>
-                              ))}
-                            </ul>
-                          ) : pro.techIds && pro.techIds.length > 0 ? (
-                            // Si vienen como array de IDs, buscamos en el perfil
-                            <ul className="flex flex-wrap gap-2">
-                              {pro.techIds.map((techId) => {
-                                const techData = profile?.techs?.find(t => t.id === techId);
-                                return techData ? (
-                                  <li
-                                    key={techData.id}
-                                    className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
-                                  >
-                                    {techData.name}
-                                  </li>
-                                ) : null;
-                              }).filter(Boolean)}
-                            </ul>
-                          ) : (
-                            <p className="text-sm opacity-60 italic">Sin tecnologías asignadas</p>
-                          )}
-                        </div> */}
                     </CardContent>
                     <CardFooter className="flex justify-end gap-3 border-t border-white/10 pt-3">
                       <Button
@@ -307,10 +275,16 @@ export default function PorjectPage() {
             ? 'Editar Proyecto'
             : 'Información del Proyecto'
         }
+        description={operation === 'create'
+          ? 'Completa los datos para crear un nuevo proyecto'
+          : operation === 'edit'
+            ? 'Modifica los datos del proyecto'
+            : 'Información del Proyecto'
+        }
         data={data}
         onSubmit={handleSubmit}
         onDelete={handleDelete}
-        deleteConfirmationDescription={`Esta acción no se puede deshacer. Se eliminará el curso "${data?.title}" permanentemente.`}
+        deleteConfirmationDescription={`Esta acción no se puede deshacer. Se eliminará el proyecto "${data?.title}" permanentemente.`}
       >
         {(operation, formData, setFormData) => (
           <CrudFields

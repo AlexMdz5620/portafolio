@@ -5,25 +5,22 @@ import CrudFields, { TypeFields } from '@/components/CrudFields';
 import { CrudDialog, useCrudDialog } from '@/components/dialog/CrudDialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Courses } from '@/schemas/courseSchema';
 import { useAdminStore } from '@/store/adminStore';
 import { ActionResponse } from '@/types/actions';
 import { formatDateForDisplay, objectToFormData } from '@/utils';
 import { Eye, PencilIcon, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 
-// Configuración de campos para cursos
-const courseFields: TypeFields = [
-    { name: 'title', label: 'Título', type: 'text' as const, required: true },
-    { name: 'institute', label: 'Institución', type: 'text' as const, required: true },
-    { name: 'description', label: 'Descripción', type: 'textarea' as const },
-    { name: 'complete_date', label: 'Fecha de Finalización', type: 'date' as const, required: true },
-    { name: 'img_url', label: 'Certificado', type: 'image' as const },
-];
-
 export default function CoursePage() {
-    const { profile } = useAdminStore();
-    const courses = (profile?.courses ?? []) as Courses;
+    const { courses } = useAdminStore();
+    // Configuración de campos para cursos
+    const courseFields: TypeFields = [
+        { name: 'title', label: 'Título', type: 'text' as const, required: true },
+        { name: 'institute', label: 'Institución', type: 'text' as const, required: true },
+        { name: 'description', label: 'Descripción', type: 'textarea' as const },
+        { name: 'complete_date', label: 'Fecha de Finalización', type: 'date' as const, required: true },
+        { name: 'img_url', label: 'Certificado', type: 'image' as const },
+    ];
 
     const { isOpen, operation, data, openCreate, openView, openEdit, openDelete, close } = useCrudDialog({
         title: '',
@@ -72,7 +69,7 @@ export default function CoursePage() {
                         </Button>
                     </div>
                     <div className="py-6 align-middle sm:px-6 lg:px-8 bg-gray-900 text-white rounded-3xl space-y-6 hidden md:block">
-                        {courses.length > 0 ? (
+                        {courses && courses.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-9">
                                 {courses.map((c) => (
                                     <Card

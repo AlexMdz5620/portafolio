@@ -1,27 +1,26 @@
 "use server";
 
-import { linkFormSchema } from '@/schemas/linkSchema';
-import { adminLinkService } from '@/service/authService';
+import { techFormSchema } from '@/schemas/techSchema';
+import { SuccessSchema } from '@/schemas/zodSchema';
+import { adminTechService } from '@/service/authService';
 import { ActionStateType } from '@/types/actions';
 import { getFormDataValue } from '@/utils';
-import { cookies } from 'next/headers';
-import { SuccessSchema } from '../schemas/zodSchema';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
 
-export async function createLink(prevState: ActionStateType, formData: FormData) {
+export async function createTech(prevState: ActionStateType, formData: FormData) {
     try {
-        const activeValue = getFormDataValue(formData, 'active');
-        const link = linkFormSchema.safeParse({
+        const tech = techFormSchema.safeParse({
             name: getFormDataValue(formData, 'name'),
-            link: getFormDataValue(formData, 'link'),
-            active: activeValue === 'true' ? true : false,
+            mastery_level: getFormDataValue(formData, 'mastery_level'),
+            category: getFormDataValue(formData, 'category'),
         });
 
-        if (!link.success) {
+        if (!tech.success) {
             return {
                 success: false,
                 msg: 'Error de validación',
-                errors: link.error.issues.map(issue => issue.message),
+                errors: tech.error.issues.map(issue => issue.message),
             }
         }
 
@@ -40,9 +39,10 @@ export async function createLink(prevState: ActionStateType, formData: FormData)
             'Authorization': `Bearer ${token?.value}`
         };
 
-        const newLink = await adminLinkService.create(link.data, auth);
-        const success = SuccessSchema.parse(newLink);
-        revalidatePath('/admin/links');
+        const newTech = await adminTechService.create(tech.data, auth);
+        const success = SuccessSchema.parse(newTech);
+        revalidatePath('/admin/techs');
+        revalidatePath('/');
 
         return {
             success: true,
@@ -50,7 +50,7 @@ export async function createLink(prevState: ActionStateType, formData: FormData)
             errors: [],
         }
     } catch (error) {
-        console.error('Error en createLink:', error);
+        console.error('Error en createTech:', error);
         return {
             success: false,
             msg: 'Error del servidor',
@@ -59,20 +59,19 @@ export async function createLink(prevState: ActionStateType, formData: FormData)
     }
 }
 
-export async function updateLink(id: number, prevState: ActionStateType, formData: FormData) {
+export async function updateTech(id: number, prevState: ActionStateType, formData: FormData) {
     try {
-        const activeValue = getFormDataValue(formData, 'active');
-        const link = linkFormSchema.safeParse({
+        const tech = techFormSchema.safeParse({
             name: getFormDataValue(formData, 'name'),
-            link: getFormDataValue(formData, 'link'),
-            active: activeValue === 'true' ? true : false,
+            mastery_level: getFormDataValue(formData, 'mastery_level'),
+            category: getFormDataValue(formData, 'category'),
         });
 
-        if (!link.success) {
+        if (!tech.success) {
             return {
                 success: false,
                 msg: 'Error de validación',
-                errors: link.error.issues.map(issue => issue.message),
+                errors: tech.error.issues.map(issue => issue.message),
             }
         }
 
@@ -91,17 +90,18 @@ export async function updateLink(id: number, prevState: ActionStateType, formDat
             'Authorization': `Bearer ${token?.value}`
         };
 
-        const updateLink = await adminLinkService.update(id, link.data, auth);
-        const success = SuccessSchema.parse(updateLink);
-        revalidatePath('/admin/links');
+        const updateTech = await adminTechService.update(id, tech.data, auth);
+        const success = SuccessSchema.parse(updateTech);
+        revalidatePath('/admin/techs');
+        revalidatePath('/');
 
         return {
             success: true,
             msg: success.msg,
-            errors: []
+            errors: [],
         }
     } catch (error) {
-        console.error('Error en updateLink:', error);
+        console.error('Error en updateTech:', error);
         return {
             success: false,
             msg: 'Error del servidor',
@@ -110,7 +110,7 @@ export async function updateLink(id: number, prevState: ActionStateType, formDat
     }
 }
 
-export async function deleteLink(id: number) {
+export async function deleteTech(id: number) {
     try {
         const cookieStore = await cookies();
         const token = cookieStore.get('access_token');
@@ -127,9 +127,10 @@ export async function deleteLink(id: number) {
             'Authorization': `Bearer ${token?.value}`
         };
 
-        const deleteLink = await adminLinkService.delete(id, auth);
-        const success = SuccessSchema.parse(deleteLink);
-        revalidatePath('/admin/links');
+        const courseDelete = await adminTechService.delete(+id, auth);
+        const success = SuccessSchema.parse(courseDelete);
+        revalidatePath('/admin/courses');
+        revalidatePath('/');
 
         return {
             success: true,
@@ -137,11 +138,11 @@ export async function deleteLink(id: number) {
             errors: [],
         }
     } catch (error) {
-        console.error('Error en deleteLink:', error);
+        console.error('Error en deleteTech', error);
         return {
             success: false,
             msg: 'Error del servidor',
-            errors: ['Error interno del servidor'],
-        };
+            errors: ['Error del servidor'],
+        }
     }
 }

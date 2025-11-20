@@ -109,7 +109,7 @@ export async function updateDescription(id: string, prevState: ActionStateType, 
     }
 }
 
-export async function viewOne(id: string) {
+export async function deleteDescription(id: string) {
     try {
         const cookieStore = await cookies();
         const token = cookieStore.get('access_token');
@@ -126,41 +126,21 @@ export async function viewOne(id: string) {
             'Authorization': `Bearer ${token?.value}`
         };
 
-        const description = await adminDescriptionService.getOne(+id, auth);
-        return description;
+        const deleteDescription = await adminDescriptionService.delete(+id, auth);
+        const success = SuccessSchema.parse(deleteDescription);
+        revalidatePath('/admin/description');
+
+        return {
+            success: true,
+            msg: success.msg,
+            errors: [''],
+        }
     } catch (error) {
-        console.error('Error en udpdateDescription', error);
+        console.error('Error en deleteDescription', error);
         return {
             success: false,
             msg: 'Error del servidor',
             errors: ['Error interno del servidor'],
         }
-    }
-}
-
-export async function deleteDescription(id: string) {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('access_token');
-
-    if (!token) {
-        return {
-            success: false,
-            msg: 'No autenticado',
-            errors: ['Token no encontrado'],
-        };
-    }
-
-    const auth = {
-        'Authorization': `Bearer ${token?.value}`
-    };
-
-    const deleteDescription = await adminDescriptionService.delete(+id, auth);
-    const success = SuccessSchema.parse(deleteDescription);
-    revalidatePath('/admin/description');
-
-    return {
-        success: true,
-        msg: success.msg,
-        errors: [''],
     }
 }

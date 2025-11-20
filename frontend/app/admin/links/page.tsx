@@ -6,30 +6,27 @@ import { CrudDialog, useCrudDialog } from '@/components/dialog/CrudDialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Links } from '@/schemas/linkSchema';
 import { useAdminStore } from '@/store/adminStore';
 import { ActionResponse } from '@/types/actions';
 import { objectToFormData } from '@/utils';
 import { Edit, Plus, Trash2 } from 'lucide-react';
 
-const linkFields: TypeFields = [
-  { name: 'name', label: 'Red Social', type: 'text' as const, required: true, placeholder: 'Ej: GitHub...' },
-  { name: 'link', label: 'Link', type: 'text' as const, required: true, placeholder: 'Ej: ejemplo.com...' },
-  {
-    name: 'active',
-    label: 'Activo',
-    type: 'select' as const,
-    required: true,
-    options: [
-      { value: 'true', label: 'Activo' },
-      { value: 'false', label: 'Inactivo' },
-    ]
-  }
-];
-
 export default function LinksPage() {
-  const { profile } = useAdminStore();
-  const links = (profile?.links ?? []) as Links;
+  const { links } = useAdminStore();
+  const linkFields: TypeFields = [
+    { name: 'name', label: 'Red Social', type: 'text' as const, required: true, placeholder: 'Ej: GitHub...' },
+    { name: 'link', label: 'Link', type: 'text' as const, required: true, placeholder: 'Ej: ejemplo.com...' },
+    {
+      name: 'active',
+      label: 'Activo',
+      type: 'select' as const,
+      required: true,
+      options: [
+        { value: 'true', label: 'Activo' },
+        { value: 'false', label: 'Inactivo' },
+      ]
+    }
+  ];
 
   const { isOpen, operation, data, openCreate, openEdit, openDelete, close } = useCrudDialog({
     name: '',
@@ -73,7 +70,7 @@ export default function LinksPage() {
               Nueva Red Social
             </Button>
           </div>
-          {links.length > 0
+          {links && links.length > 0
             ? <div className='py-6 align-middle sm:px-6 lg:px-8 bg-gray-900 text-white rounded-3xl space-y-6 hidden md:block'>
               <div className='space-y-6'>
                 <p>
@@ -158,8 +155,8 @@ export default function LinksPage() {
         }
         description={
           operation === 'create'
-            ? 'Completa los datos para crear una nueva descripción'
-            : 'Modifica los datos de la descripción'
+            ? 'Completa los datos para crear una nueva red social'
+            : 'Modifica los datos de la red social'
         }
         data={data}
         onSubmit={handleSubmite}
