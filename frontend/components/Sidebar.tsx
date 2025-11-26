@@ -56,30 +56,39 @@ export default function AdminSidebar() {
 
     // Contenido del sidebar
     const sidebarContent = (
-        <div className="flex flex-col max-h-full bg-gray-900 text-white">
+        <div className="flex flex-col h-full bg-linear-to-b from-gray-900 to-gray-800 text-white">
             {/* Header del Sidebar */}
-            <div className="p-6 border-b border-gray-700">
-                <h2 className="text-xl font-bold flex items-center">
-                    <LayoutDashboard className="mr-3 h-6 w-6" />
-                    Panel Admin
-                </h2>
-                <p className="text-gray-400 text-sm mt-1">Gestión del portafolio</p>
+            <div className="p-6 border-b border-gray-700/50 shrink-0 bg-gray-900/80 backdrop-blur-sm">
+                <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-linear-to-r from-[#be3144] to-[#fd0022] rounded-lg">
+                        <LayoutDashboard className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                        <h2 className="text-xl font-bold bg-linear-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                            Panel Admin
+                        </h2>
+                        <p className="text-gray-400 text-sm mt-1">Gestión del portafolio</p>
+                    </div>
+                </div>
             </div>
 
-            {/* Navegación */}
-            <nav className="flex-1 p-4">
-                <ul className="space-y-3">
+            {/* Navegación - Contenedor con scroll */}
+            <nav className="flex-1 overflow-y-auto py-6">
+                <ul className="space-y-2 px-4">
                     {adminPage.map((page, idx) => (
                         <li key={idx}>
                             <IntelligentNavLink
                                 href={page.url}
-                                className={`flex items-center px-4 py-3 rounded-lg transition-all duration-300 ${isActive(page.url)
-                                    ? 'bg-[#be3144] text-white shadow-md'
-                                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                                    }`}
+                                className={`group flex items-center px-4 py-3 rounded-xl transition-all duration-300 border border-transparent ${
+                                    isActive(page.url)
+                                        ? 'bg-linear-to-r from-[#be3144] to-[#fd0022] text-white shadow-lg shadow-red-500/25 border-red-400/30'
+                                        : 'text-gray-300 hover:bg-gray-700/50 hover:text-white hover:border-gray-600/50 hover:shadow-md'
+                                }`}
                                 onClick={() => setMobileOpen(false)}
                             >
-                                <span className="mr-3">
+                                <span className={`mr-3 transition-transform duration-300 ${
+                                    isActive(page.url) ? 'scale-110' : 'group-hover:scale-110'
+                                }`}>
                                     {iconMap[page.url] || <LayoutDashboard className="h-5 w-5" />}
                                 </span>
                                 <span className="font-medium">{page.name}</span>
@@ -90,9 +99,9 @@ export default function AdminSidebar() {
             </nav>
 
             {/* Footer del Sidebar */}
-            <div className="p-4 border-t border-gray-700">
-                <div className="bg-gray-800 rounded-lg p-4">
-                    <p className="text-gray-300 text-sm mb-3">Sesión activa</p>
+            <div className="p-4 border-t border-gray-700/50 shrink-0 bg-gray-900/80 backdrop-blur-sm">
+                <div className="bg-linear-to-r from-gray-800 to-gray-700 rounded-xl p-4 border border-gray-600/30">
+                    <p className="text-gray-300 text-sm mb-3 font-medium">Sesión activa</p>
                     <LogoutButton />
                 </div>
             </div>
@@ -107,12 +116,15 @@ export default function AdminSidebar() {
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="fixed top-4 right-4 z-50 md:hidden bg-[#be3144] text-white hover:bg-[#fd0022]"
+                        className="fixed top-4 right-4 z-50 md:hidden bg-linear-to-r from-[#be3144] to-[#fd0022] text-white hover:from-[#fd0022] hover:to-[#be3144] shadow-lg"
                     >
                         <Menu className="h-5 w-5" />
                     </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="p-0 w-80 bg-gray-900 border-gray-700">
+                <SheetContent 
+                    side="left" 
+                    className="p-0 w-80 bg-linear-to-b from-gray-900 to-gray-800 border-gray-700 flex flex-col h-full"
+                >
                     <SheetTitle className="sr-only">Menú de Administración</SheetTitle>
                     {sidebarContent}
                 </SheetContent>
@@ -120,9 +132,9 @@ export default function AdminSidebar() {
         );
     }
 
-    // Versión desktop - sidebar fijo
+    // Versión desktop - sidebar fijo con altura completa
     return (
-        <aside className="fixed left-0 w-64 bg-gray-900 shadow-lg z-40 flex flex-col">
+        <aside className="fixed left-0 top-0 w-64 h-screen bg-linear-to-b from-gray-900 to-gray-800 shadow-2xl z-40 flex flex-col border-r border-gray-700/50">
             {sidebarContent}
         </aside>
     );
