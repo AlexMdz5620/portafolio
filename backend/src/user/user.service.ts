@@ -26,7 +26,6 @@ export class UserService {
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id },
-      relations: ['courses', 'projects', 'techs', 'links', 'descriptions'],
     });
 
     if (!user) {
@@ -52,7 +51,11 @@ export class UserService {
       throw new NotFoundException(`Usuario con el ID ${id} no encontrado.`);
     }
 
-    return await this.userRepository.save(user);
+    await this.userRepository.save(user);
+
+    return {
+      msg: `Usuario actualizado correctamente.`,
+    };
   }
 
   async changePassword(id: number, changePasswordDto: ChangePasswordDto) {

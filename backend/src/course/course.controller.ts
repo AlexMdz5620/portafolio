@@ -8,13 +8,13 @@ import {
   Delete,
   Req,
   UseGuards,
-  // Put,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import type { AuthRequest } from '../auth/types/auth-request.interface';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
+import { DeleteVerificationGuard } from 'src/auth/guard/delete-verification.guard';
 
 @Controller('courses')
 @UseGuards(JwtAuthGuard)
@@ -46,6 +46,7 @@ export class CourseController {
   }
 
   @Delete(':id')
+  @UseGuards(DeleteVerificationGuard)
   remove(@Param('id') id: string, @Req() req: AuthRequest) {
     return this.courseService.remove(+id, req.user);
   }

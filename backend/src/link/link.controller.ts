@@ -14,6 +14,7 @@ import { CreateLinkDto } from './dto/create-link.dto';
 import { UpdateLinkDto } from './dto/update-link.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import type { AuthRequest } from 'src/auth/types/auth-request.interface';
+import { DeleteVerificationGuard } from 'src/auth/guard/delete-verification.guard';
 
 @Controller('links')
 @UseGuards(JwtAuthGuard)
@@ -45,6 +46,7 @@ export class LinkController {
   }
 
   @Delete(':id')
+  @UseGuards(DeleteVerificationGuard)
   remove(@Param('id') id: string, @Req() req: AuthRequest) {
     return this.linkService.remove(+id, req.user);
   }

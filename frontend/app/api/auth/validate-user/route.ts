@@ -10,7 +10,7 @@ export async function GET() {
     }
 
     try {
-        const res = await fetch(`${process.env.API_URL}/auth/verify`, {
+        const res = await fetch(`${process.env.API_URL}/auth/validate-user`, {
             headers: {
                 'Authorization': `Bearer ${token.value}`,
             }

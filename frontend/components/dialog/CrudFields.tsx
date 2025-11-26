@@ -1,21 +1,25 @@
 "use client";
 
-import ImageUpload from './ImageUpload';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
-import { Checkbox } from './ui/checkbox';
-import { RadioGroup, RadioGroupItem } from './ui/radio-group';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Label } from './ui/label';
+import ImageUpload from '../ImageUpload';
+import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
+import { Checkbox } from '../ui/checkbox';
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Label } from '../ui/label';
+import { Button } from '../ui/button';
+import { Eye, EyeClosed } from 'lucide-react';
+import { useState } from 'react';
 
 export type TypeFields = {
     name: string
     label: string
-    type: 'text' | 'textarea' | 'date' | 'image' | 'number' | 'radio' | 'select' | 'checkbox'
+    type: 'text' | 'textarea' | 'date' | 'image' | 'number' | 'radio' | 'select' | 'checkbox' | 'password'
     required?: boolean
     options?: { value: string; label: string }[]
     multiple?: boolean
     placeholder?: string
+    maxLength?: number
 }[]
 
 interface CrudFieldsProps {
@@ -28,6 +32,15 @@ interface CrudFieldsProps {
 
 export default function CrudFields({ fields, formData, setFormData, operation, folder }: CrudFieldsProps) {
     const isView = operation === 'view';
+    const [visiblePasswords, setVisiblePasswords] = useState<Record<string, boolean>>({}); // ← Estado para visibilidad de passwords
+
+    // Función para toggle de visibilidad de contraseña
+    const togglePasswordVisibility = (fieldName: string) => {
+        setVisiblePasswords(prev => ({
+            ...prev,
+            [fieldName]: !prev[fieldName]
+        }));
+    };
 
     // Función para controlar el cambio de valores del input
     const handleFieldChange = (name: string, value: unknown) => {
@@ -127,6 +140,34 @@ export default function CrudFields({ fields, formData, setFormData, operation, f
                         className="bg-gray-800 border-gray-700 text-white"
                     />
                 )
+            case 'password':
+                const isPasswordVisible = visiblePasswords[field.name] || false;
+                return (
+                    <div className='relative'>
+                        <Input
+                            type={isPasswordVisible ? 'text' : 'password'}
+                            value={getFieldValue(field.name)}
+                            onChange={(e) => handleFieldChange(field.name, e.target.value)}
+                            required={field.required}
+                            disabled={isView}
+                            placeholder={field.placeholder}
+                            className="bg-gray-800 border-gray-700 text-white pr-10"
+                        />
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                            onClick={() => togglePasswordVisibility(field.name)}
+                        >
+                            {isPasswordVisible ? (
+                                <EyeClosed className="h-4 w-4 text-gray-400" />
+                            ) : (
+                                <Eye className="h-4 w-4 text-gray-400" />
+                            )}
+                        </Button>
+                    </div>
+                )
 
             case 'radio':
                 if (!field.options) {
@@ -160,8 +201,13 @@ export default function CrudFields({ fields, formData, setFormData, operation, f
                 )
 
             case 'textarea':
+                const textValue = getFieldValue(field.name);
+                const maxLength = field.maxLength || 500; // Usar maxLength del field o 500 por defecto
+                const charCount = textValue.length;
+                const isNearLimit = charCount > maxLength * 0.8; // 80% del límite
+
                 return (
-                    <>
+                    <div className="relative">
                         <Textarea
                             value={getFieldValue(field.name)}
                             onChange={(e) => handleFieldChange(field.name, e.target.value)}
@@ -169,13 +215,19 @@ export default function CrudFields({ fields, formData, setFormData, operation, f
                             disabled={isView}
                             placeholder={field.placeholder}
                             rows={3}
-                            className="bg-gray-800 border-gray-700 text-white resize-none"
-                            maxLength={500}
+                            className={`bg-gray-800 border-gray-700 text-white resize-none pr-20 ${charCount > maxLength ? 'border-red-500' : ''
+                                }`}
+                            maxLength={maxLength}
                         />
-                        {/* <FormDescription className="text-xs text-gray-500">
-                            {field.value?.lenth || 0}/500 caracteres
-                        </FormDescription> */}
-                    </>
+                        <div className={`absolute bottom-2 right-2 text-xs ${charCount > maxLength
+                                ? 'text-red-400'
+                                : isNearLimit
+                                    ? 'text-yellow-400'
+                                    : 'text-gray-400'
+                            }`}>
+                            {charCount}/{maxLength}
+                        </div>
+                    </div>
                 )
 
             case 'image':

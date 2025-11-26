@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 
 interface ImageUploadProps {
-    onImageUpload: (url: string) => void;
+    onImageUpload?: (url: string) => void;
     existingImageUrl?: string;
     folder?: string;
     operation: "create" | "edit" | "delete" | "view"
@@ -70,7 +70,9 @@ export default function ImageUpload({
         try {
             const url = await uploadToCloudinary(file);
             setImageUrl(url);
-            onImageUpload(url);
+            if (onImageUpload) {
+                onImageUpload(url);
+            }
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Error desconocido');
         } finally {
@@ -89,7 +91,9 @@ export default function ImageUpload({
 
     const removeImage = () => {
         setImageUrl('');
-        onImageUpload('');
+        if (onImageUpload) {
+            onImageUpload('');
+        }
     };
 
     return (

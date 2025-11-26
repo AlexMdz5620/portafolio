@@ -58,7 +58,7 @@ export async function createDescription(prevState: ActionStateType, formData: Fo
     }
 }
 
-export async function updateDescription(id: string, prevState: ActionStateType, formData: FormData) {
+export async function updateDescription(id: number, prevState: ActionStateType, formData: FormData) {
     try {
         const description = descriptionFromSchema.safeParse({
             name: getFormDataValue(formData, 'name'),
@@ -89,7 +89,7 @@ export async function updateDescription(id: string, prevState: ActionStateType, 
             'Authorization': `Bearer ${token?.value}`
         };
 
-        const updateDescription = await adminDescriptionService.update(+id, description.data, auth);
+        const updateDescription = await adminDescriptionService.update(id, description.data, auth);
 
         const success = SuccessSchema.parse(updateDescription);
         revalidatePath('/admin/descriptions');
@@ -109,7 +109,7 @@ export async function updateDescription(id: string, prevState: ActionStateType, 
     }
 }
 
-export async function deleteDescription(id: string) {
+export async function deleteDescription(id: number, password: string) {
     try {
         const cookieStore = await cookies();
         const token = cookieStore.get('access_token');
@@ -126,7 +126,7 @@ export async function deleteDescription(id: string) {
             'Authorization': `Bearer ${token?.value}`
         };
 
-        const deleteDescription = await adminDescriptionService.delete(+id, auth);
+        const deleteDescription = await adminDescriptionService.delete(id, password, auth);
         const success = SuccessSchema.parse(deleteDescription);
         revalidatePath('/admin/description');
 

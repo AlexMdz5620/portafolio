@@ -34,7 +34,7 @@ export class AuthController {
     return userWithoutPassword;
   }
 
-  @Get('verify')
+  @Get('validate-user')
   @UseGuards(JwtAuthGuard)
   verifyToken(@Request() req: AuthRequest) {
     return {

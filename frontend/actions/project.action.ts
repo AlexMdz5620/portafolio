@@ -130,7 +130,7 @@ export async function updateProject(id: number, prevState: ActionStateType, form
     }
 }
 
-export async function deleteProject(id: number) {
+export async function deleteProject(id: number, password: string) {
     try {
         const cookieStore = await cookies();
         const token = cookieStore.get('access_token');
@@ -147,7 +147,7 @@ export async function deleteProject(id: number) {
             'Authorization': `Bearer ${token?.value}`
         };
 
-        const projectDelete = await adminProjectService.delete(id, auth);
+        const projectDelete = await adminProjectService.delete(id, password, auth);
         const success = SuccessSchema.parse(projectDelete);
 
         revalidatePath('/admin/projects');

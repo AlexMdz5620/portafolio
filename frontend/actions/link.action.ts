@@ -110,7 +110,7 @@ export async function updateLink(id: number, prevState: ActionStateType, formDat
     }
 }
 
-export async function deleteLink(id: number) {
+export async function deleteLink(id: number, password: string) {
     try {
         const cookieStore = await cookies();
         const token = cookieStore.get('access_token');
@@ -127,7 +127,7 @@ export async function deleteLink(id: number) {
             'Authorization': `Bearer ${token?.value}`
         };
 
-        const deleteLink = await adminLinkService.delete(id, auth);
+        const deleteLink = await adminLinkService.delete(id, password, auth);
         const success = SuccessSchema.parse(deleteLink);
         revalidatePath('/admin/links');
 

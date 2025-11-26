@@ -1,7 +1,7 @@
 "use client";
 
 import { createTech, deleteTech, updateTech } from '@/actions/tech.action';
-import CrudFields, { TypeFields } from '@/components/CrudFields';
+import CrudFields, { TypeFields } from '@/components/dialog/CrudFields';
 import { CrudDialog, useCrudDialog } from '@/components/dialog/CrudDialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -36,8 +36,8 @@ export default function TechPage() {
         return { success: false, msg: 'Operación no válida', errors: ['Operación no reconocida.'] }
     }
 
-    const handleDelete = async (id: number): Promise<ActionResponse> => {
-        return await deleteTech(id)
+    const handleDelete = async (data: {id: number, password: string}): Promise<ActionResponse> => {
+        return await deleteTech(data.id, data.password)
     }
 
     return (

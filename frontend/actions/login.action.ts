@@ -8,10 +8,7 @@ type ActionStateType = {
     errors: string[];
 }
 
-export async function login(
-    prevState: ActionStateType | undefined,
-    formData: FormData
-) {
+export async function login(prevState: ActionStateType, formData: FormData) {
     const loginCredentials = {
         email: formData.get('email'),
         password: formData.get('password'),

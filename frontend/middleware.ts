@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
 
     // Verificar si el token es válido
     try {
-      const verifyResponse = await fetch(`${process.env.API_URL}/auth/verify`, {
+      const verifyResponse = await fetch(`${process.env.API_URL}/auth/validate-user`, {
         headers: {
           'Authorization': `Bearer ${token.value}`
         }
@@ -37,7 +37,7 @@ export async function middleware(request: NextRequest) {
   // Si ya está autenticado, redirigir lejos de /auth
   if (pathname.startsWith('/auth') && token) {
     try {
-      const verifyResponse = await fetch(`${process.env.API_URL}/auth/verify`, {
+      const verifyResponse = await fetch(`${process.env.API_URL}/auth/validate-user`, {
         headers: {
           'Authorization': `Bearer ${token.value}`
         }

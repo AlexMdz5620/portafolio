@@ -90,20 +90,4 @@ export class ProjectService {
       msg: `El proyecto "${project.title}" fue eliminado correctamente.`,
     };
   }
-
-  async removeTech(proyectId: number, techId: number, user: User) {
-    const project = await this.findOne(proyectId, user);
-
-    const techIndex = project.techs.findIndex((tech) => tech.id === techId);
-    if (techIndex === -1) {
-      throw new NotFoundException(
-        'La tecnología no está asociada a este proyecto.',
-      );
-    }
-
-    project.techs.splice(techIndex, 1);
-
-    await this.projectRepository.save(project);
-    return { msg: 'Tecnología eliminada del proyecto correctamente.' };
-  }
 }

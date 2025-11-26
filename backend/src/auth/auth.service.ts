@@ -83,4 +83,13 @@ export class AuthService {
     }
     return null;
   }
+
+  async verifyPassword(userId: number, password: string): Promise<boolean> {
+    const user = await this.userService.findOne(userId); // Asumiendo que tienes este método
+    if (!user) {
+      throw new UnauthorizedException('Usuario no encontrado');
+    }
+
+    return await this.encoderService.checkPass(password, user.password);
+  }
 }

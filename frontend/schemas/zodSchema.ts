@@ -34,9 +34,16 @@ export const contacFormSchema = z.object({
 export type ContacForm = z.infer<typeof contacFormSchema>;
 
 /* Change Password Form */
-export const changePassForm = z.object({
-    password: z.string(),
-    new_password: z.string(),
+export const ChangePasswordSchema = z.object({
+    current_password: z.string().min(1, 'La contraseña actual es requerida'),
+    new_password: z.string().min(6, 'La nueva contraseña debe tener al menos 6 caracteres'),
+    confirm_password: z.string().min(1, 'La confirmación de contraseña es requerida'),
+}).refine((data) => data.new_password === data.confirm_password, {
+    message: "Las contraseñas no coinciden",
+    path: ["confirm_password"],
 });
 
-export type ChangePassForm = z.infer<typeof changePassForm>
+export type ChangePassForm = {
+    password: string;
+    new_password: string;
+};

@@ -10,7 +10,7 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const response = await fetch('/api/auth/verify');
+                const response = await fetch('/api/auth/validate-user');
                 if (response.ok) {
                     setAuthStatus('authenticated');
                 } else {

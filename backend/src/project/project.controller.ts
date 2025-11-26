@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   UseGuards,
@@ -15,6 +14,7 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import type { AuthRequest } from '../auth/types/auth-request.interface';
+import { DeleteVerificationGuard } from 'src/auth/guard/delete-verification.guard';
 
 @Controller('projects')
 @UseGuards(JwtAuthGuard)
@@ -46,16 +46,8 @@ export class ProjectController {
   }
 
   @Delete(':id')
+  @UseGuards(DeleteVerificationGuard)
   remove(@Param('id') id: string, @Req() req: AuthRequest) {
     return this.projectService.remove(+id, req.user);
-  }
-
-  @Patch(':id/remove-tech')
-  removeTech(
-    @Param('id') id: string,
-    @Body('techId') techId: number,
-    @Req() req: AuthRequest,
-  ) {
-    return this.projectService.removeTech(+id, techId, req.user);
   }
 }

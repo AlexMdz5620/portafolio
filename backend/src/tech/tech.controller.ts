@@ -14,6 +14,7 @@ import { CreateTechDto } from './dto/create-tech.dto';
 import { UpdateTechDto } from './dto/update-tech.dto';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import type { AuthRequest } from '../auth/types/auth-request.interface';
+import { DeleteVerificationGuard } from 'src/auth/guard/delete-verification.guard';
 
 @Controller('techs')
 @UseGuards(JwtAuthGuard)
@@ -45,6 +46,7 @@ export class TechsController {
   }
 
   @Delete(':id')
+  @UseGuards(DeleteVerificationGuard)
   remove(@Param('id') id: string, @Req() req: AuthRequest) {
     return this.techService.remove(+id, req.user);
   }

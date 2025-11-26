@@ -9,6 +9,7 @@ import { TechModule } from '../tech/tech.module';
 import { Project } from '../project/entities/project.entity';
 import { Tech } from '../tech/entities/tech.entity';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
     ProjectModule,
     TechModule,
     CloudinaryModule,
+    AuthModule,
   ],
   controllers: [CourseController],
   providers: [CourseService],

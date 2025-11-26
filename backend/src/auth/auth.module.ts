@@ -7,6 +7,7 @@ import { UserModule } from '../user/user.module';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EncoderService } from './encoder.service';
+import { DeleteVerificationGuard } from './guard/delete-verification.guard';
 
 @Module({
   imports: [
@@ -21,8 +22,13 @@ import { EncoderService } from './encoder.service';
       }),
     }),
   ],
-  providers: [AuthService, JwtStrategy, EncoderService],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    EncoderService,
+    DeleteVerificationGuard,
+  ],
   controllers: [AuthController],
-  exports: [AuthService, JwtStrategy, PassportModule],
+  exports: [AuthService, JwtStrategy, PassportModule, DeleteVerificationGuard],
 })
 export class AuthModule {}

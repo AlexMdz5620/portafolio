@@ -1,7 +1,7 @@
 "use client";
 
 import { createDescription, deleteDescription, updateDescription } from '@/actions/description.action';
-import CrudFields from '@/components/CrudFields';
+import CrudFields from '@/components/dialog/CrudFields';
 import DescrCard from '@/components/description/DescrCard';
 import { CrudDialog, useCrudDialog } from '@/components/dialog/CrudDialog';
 import { Button } from '@/components/ui/button';
@@ -39,14 +39,14 @@ export default function DescriptionPage() {
     if (operation === 'create') {
       return await createDescription({ success: false, msg: '', errors: [] }, formData);
     } else if (operation === 'edit' && data?.id) {
-      return await updateDescription(data.id.toString(), { success: false, msg: '', errors: [] }, formData);
+      return await updateDescription(data.id, { success: false, msg: '', errors: [] }, formData);
     }
 
     return { success: false, msg: 'Operación no válida', errors: ['Operación no reconocida'] };
   };
 
-  const handleDelete = async (id: number): Promise<ActionResponse> => {
-    return await deleteDescription(id.toString());
+  const handleDelete = async (data: {id: number, password: string}): Promise<ActionResponse> => {
+    return await deleteDescription(data.id, data.password);
   }
 
   return (

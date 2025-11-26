@@ -17,14 +17,14 @@ export const adminProfileService = {
     updateProfile: (body: UserFormData, auth: {
         Authorization: string;
     }) => apiFetch<User>('/users/me', {
-        method: 'POST',
+        method: 'PUT',
         headers: auth,
         body: JSON.stringify(body),
     }),
     updatePass: (body: ChangePassForm, auth: {
         Authorization: string;
     }) => apiFetch('/users/me/password', {
-        method: 'POST',
+        method: 'PATCH',
         headers: auth,
         body: JSON.stringify(body)
     }),
@@ -52,11 +52,12 @@ export const adminCourseService = {
         headers: auth,
         body: JSON.stringify(body),
     }),
-    delete: (id: Course['id'], auth: {
+    delete: (id: Course['id'], password: string, auth: {
         Authorization: string;
     }) => apiFetch(`/courses/${id}`, {
         method: 'DELETE',
         headers: auth,
+        body: JSON.stringify({ password }),
     }),
 }
 
@@ -82,18 +83,12 @@ export const adminProjectService = {
         headers: auth,
         body: JSON.stringify(body),
     }),
-    delete: (id: Project['id'], auth: {
+    delete: (id: Project['id'], password: string, auth: {
         Authorization: string;
     }) => apiFetch(`/projects/${id}`, {
         method: 'DELETE',
         headers: auth,
-    }),
-    removeTech: (id: Project['id'], body: Tech['id'], auth: {
-        Authorization: string;
-    }) => apiFetch(`/projects/${id}/remove-tech`, {
-        method: 'PATCH',
-        headers: auth,
-        body: JSON.stringify(body),
+        body: JSON.stringify({ password }),
     })
 }
 
@@ -119,11 +114,12 @@ export const adminTechService = {
         headers: auth,
         body: JSON.stringify(body),
     }),
-    delete: (id: Tech['id'], auth: {
+    delete: (id: Tech['id'], password: string, auth: {
         Authorization: string;
     }) => apiFetch(`/techs/${id}`, {
         method: 'DELETE',
         headers: auth,
+        body: JSON.stringify({ password })
     })
 }
 
@@ -149,7 +145,7 @@ export const adminLinkService = {
         headers: auth,
         body: JSON.stringify(body),
     }),
-    delete: (id: Link['id'], auth: {
+    delete: (id: Link['id'], password: string, auth: {
         Authorization: string;
     }) => apiFetch(`/links/${id}`, {
         method: 'DELETE',
@@ -179,10 +175,11 @@ export const adminDescriptionService = {
         headers: auth,
         body: JSON.stringify(body),
     }),
-    delete: (id: Description['id'], auth: {
+    delete: (id: Description['id'], password: string, auth: {
         Authorization: string;
     }) => apiFetch(`/description/${id}`, {
         method: 'DELETE',
-        headers: auth
+        headers: auth,
+        body: JSON.stringify({ password }),
     }),
 }

@@ -48,7 +48,7 @@ export interface CrudDialogProps {
 
     // Operaciones
     onSubmit: (formData: FormData) => Promise<{ success: boolean; msg: string; errors: string[] }>
-    onDelete?: (id: number) => Promise<{ success: boolean; msg: string; errors: string[] }>
+    onDelete?: (data: { id: number; password: string }) => Promise<{ success: boolean; msg: string; errors: string[] }>
 
     // Renderizado
     trigger?: React.ReactNode
@@ -97,6 +97,7 @@ export function CrudDialog({
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState<FormData>({});
     const [errors, setErrors] = useState<string[]>([]);
+    const [deletePassword, setDeletePassword] = useState('');
 
     const isControlled = isOpen !== undefined;
     const dialogOpen = isControlled ? isOpen : open;
@@ -116,6 +117,7 @@ export function CrudDialog({
         if (!dialogOpen) {
             setFormData(defaultValues || {});
             setErrors([])
+            setDeletePassword('');
         }
     }, [dialogOpen, defaultValues]);
 
@@ -147,30 +149,41 @@ export function CrudDialog({
         }
     }
 
-    const handleDelete = async () => {
+    const handleDelete = async (e: React.FormEvent) => {
+        e.preventDefault();
         if (!onDelete || !data || !data.id) return;
 
+        if (!deletePassword.trim()) {
+            setErrors(['La contraseña es requerida para eliminar']);
+            return;
+        }
+
         try {
-            const result = await onDelete(data.id);
+            const result = await onDelete({
+                id: data.id,
+                password: deletePassword
+            });
 
             if (result.success) {
                 toast.success('Éxito', {
                     description: result.msg || 'Eliminado correctamente'
-                })
-                setDialogOpen?.(false)
-                onSuccess?.()
+                });
+                setDialogOpen?.(false);
+                setDeletePassword(''); // ← Limpiar contraseña
+                onSuccess?.();
             } else {
+                setErrors(result.errors);
                 toast.error('Error', {
                     description: result.msg || 'Ocurrió un error al eliminar'
-                })
+                });
             }
         } catch (error) {
             toast.error('Error', {
                 description: 'Ocurrió un error al eliminar'
             });
-            onError?.(error)
+            onError?.(error);
         }
-    }
+    };
 
     const getSubmitButtonText = () => {
         if (submitButtonText) return submitButtonText;
@@ -196,7 +209,7 @@ export function CrudDialog({
         return (
             <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 {trigger && (
-                    <AlertDialogTrigger>
+                    <AlertDialogTrigger asChild>
                         {trigger}
                     </AlertDialogTrigger>
                 )}
@@ -209,21 +222,58 @@ export function CrudDialog({
                             {deleteConfirmationDescription}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel className="bg-gray-800 text-white hover:bg-gray-700">
-                            {cancelButtonText}
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                            onClick={handleDelete}
-                            disabled={isDeleting}
-                            className="bg-red-600 hover:bg-red-700 min-w-[100px] hover:cursor-pointer"
-                        >
-                            {isDeleting ? 'Eliminando...' : deleteButtonText}
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
+
+                    {/* FORMULARIO PARA CONTRASEÑA */}
+                    <form onSubmit={handleDelete} className="space-y-4">
+                        <div className="space-y-2">
+                            <label htmlFor="delete-password" className="text-sm font-medium text-gray-300">
+                                Contraseña de verificación *
+                            </label>
+                            <input
+                                type="password"
+                                id="delete-password"
+                                value={deletePassword}
+                                onChange={(e) => setDeletePassword(e.target.value)}
+                                placeholder="Ingresa tu contraseña para confirmar"
+                                required
+                                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                        </div>
+
+                        {errors.length > 0 && (
+                            <div className="bg-red-900/50 border border-red-700 rounded p-3">
+                                <p className="text-red-300 text-sm font-medium">Errores:</p>
+                                <ul className="text-red-200 text-sm list-disc list-inside mt-1">
+                                    {errors.map((error, index) => (
+                                        <li key={index}>{error}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        <AlertDialogFooter>
+                            <AlertDialogCancel
+                                type="button"
+                                onClick={() => {
+                                    setDeletePassword('');
+                                    setErrors([]);
+                                }}
+                                className="bg-gray-800 text-white hover:bg-gray-700"
+                            >
+                                {cancelButtonText}
+                            </AlertDialogCancel>
+                            <AlertDialogAction
+                                type="submit"
+                                disabled={isDeleting || !deletePassword.trim()}
+                                className="bg-red-600 hover:bg-red-700 min-w-[100px] hover:cursor-pointer disabled:bg-red-800 disabled:cursor-not-allowed"
+                            >
+                                {isDeleting ? 'Eliminando...' : deleteButtonText}
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </form>
                 </AlertDialogContent>
             </AlertDialog>
-        )
+        );
     }
 
     return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { createLink, deleteLink, updateLink } from '@/actions/link.action';
-import CrudFields, { TypeFields } from '@/components/CrudFields';
+import CrudFields, { TypeFields } from '@/components/dialog/CrudFields';
 import { CrudDialog, useCrudDialog } from '@/components/dialog/CrudDialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -46,8 +46,8 @@ export default function LinksPage() {
     return { success: false, msg: 'Operación no válida', errors: ['Operación no reconocida.'] }
   }
 
-  const handleDelete = async (id: number): Promise<ActionResponse> => {
-    return await deleteLink(id)
+  const handleDelete = async (data: {id: number, password: string}): Promise<ActionResponse> => {
+    return await deleteLink(data.id, data.password);
   }
 
   return (
