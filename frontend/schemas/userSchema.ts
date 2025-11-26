@@ -1,4 +1,6 @@
 import z from 'zod';
+import { linkSchema } from './linkSchema';
+import { descriptionSchema } from './descriptionSchema';
 
 export const userFormSchema = z.object({
     name: z.string(),
@@ -13,6 +15,8 @@ export const userSchema = z.object({
     lastname: z.string(),
     email: z.string(),
     photo_url: z.string(),
+    links: z.optional(z.array(linkSchema)),
+    descriptions: z.optional(z.array(descriptionSchema))
 });
 
 export type UserFormData = z.infer<typeof userFormSchema>;

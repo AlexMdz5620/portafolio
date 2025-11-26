@@ -78,6 +78,7 @@ export default function ImageUpload({
         } finally {
             setUploading(false);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onImageUpload]);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
