@@ -110,7 +110,7 @@ export async function updateTech(id: number, prevState: ActionStateType, formDat
     }
 }
 
-export async function deleteTech(id: number, password: string) {
+export async function deleteTech(id: number) {
     try {
         const cookieStore = await cookies();
         const token = cookieStore.get('access_token');
@@ -127,7 +127,7 @@ export async function deleteTech(id: number, password: string) {
             'Authorization': `Bearer ${token?.value}`
         };
 
-        const courseDelete = await adminTechService.delete(id, password, auth);
+        const courseDelete = await adminTechService.delete(id, auth);
         const success = SuccessSchema.parse(courseDelete);
         revalidatePath('/admin/courses');
         revalidatePath('/');

@@ -46,8 +46,8 @@ export default function LinksPage() {
     return { success: false, msg: 'Operación no válida', errors: ['Operación no reconocida.'] }
   }
 
-  const handleDelete = async (data: {id: number, password: string}): Promise<ActionResponse> => {
-    return await deleteLink(data.id, data.password);
+  const handleDelete = async (id: number): Promise<ActionResponse> => {
+    return await deleteLink(id);
   }
 
   return (

@@ -36,8 +36,8 @@ export default function TechPage() {
         return { success: false, msg: 'Operación no válida', errors: ['Operación no reconocida.'] }
     }
 
-    const handleDelete = async (data: {id: number, password: string}): Promise<ActionResponse> => {
-        return await deleteTech(data.id, data.password)
+    const handleDelete = async (id: number): Promise<ActionResponse> => {
+        return await deleteTech(id)
     }
 
     return (

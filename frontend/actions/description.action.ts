@@ -109,7 +109,7 @@ export async function updateDescription(id: number, prevState: ActionStateType, 
     }
 }
 
-export async function deleteDescription(id: number, password: string) {
+export async function deleteDescription(id: number) {
     try {
         const cookieStore = await cookies();
         const token = cookieStore.get('access_token');
@@ -126,7 +126,7 @@ export async function deleteDescription(id: number, password: string) {
             'Authorization': `Bearer ${token?.value}`
         };
 
-        const deleteDescription = await adminDescriptionService.delete(id, password, auth);
+        const deleteDescription = await adminDescriptionService.delete(id, auth);
         const success = SuccessSchema.parse(deleteDescription);
         revalidatePath('/admin/description');
 

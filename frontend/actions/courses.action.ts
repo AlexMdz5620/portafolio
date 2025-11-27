@@ -118,7 +118,7 @@ export async function updateCourse(id: number, prevState: ActionStateType, formD
     }
 }
 
-export async function deleteCourse(id: number, password: string) {
+export async function deleteCourse(id: number) {
     try {
         const cookieStore = await cookies();
         const token = cookieStore.get('access_token');
@@ -135,7 +135,7 @@ export async function deleteCourse(id: number, password: string) {
             'Authorization': `Bearer ${token?.value}`
         };
 
-        const courseDelete = await adminCourseService.delete(id, password, auth);
+        const courseDelete = await adminCourseService.delete(id, auth);
         const success = SuccessSchema.parse(courseDelete);
         revalidatePath('/admin/courses');
         revalidatePath('/');
