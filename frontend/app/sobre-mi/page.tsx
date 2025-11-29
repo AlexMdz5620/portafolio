@@ -32,16 +32,14 @@ export default function SobreMiPage() {
               aquí
             </Link>{" "}
             para verlos. */}
-            {descriptions?.map(desc => {
-              const about = desc.type
-              if (about === 'about') return (
-                <p
-                  key={desc.id}
-                  className="text-lg md:text-xl text-white leading-relaxed">
-                  {desc.content}
-                </p>
-              )
-            })}
+            {descriptions?.map(desc => (
+              <p
+                key={desc.id}
+                className="text-lg md:text-xl text-white leading-relaxed">
+                {desc.content}
+              </p>
+            )
+            )}
           </div>
         </div>
       </section>

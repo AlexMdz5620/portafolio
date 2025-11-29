@@ -23,7 +23,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Pencil, Plus, Trash2 } from 'lucide-react'
+import { Eye, Pencil, Plus, Trash2 } from 'lucide-react'
 import { Tech } from '@/schemas/techSchema';
 
 export type CrudOperation = 'create' | 'edit' | 'delete' | 'view';
@@ -186,6 +186,7 @@ export function CrudDialog({
             case 'create': return <Plus className="h-4 w-4" />
             case 'edit': return <Pencil className="h-4 w-4" />
             case 'delete': return <Trash2 className="h-4 w-4" />
+            case 'view': return <Eye className="h-4 w-4" />
             default: return null
         }
     }

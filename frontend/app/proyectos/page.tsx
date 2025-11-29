@@ -9,7 +9,7 @@ export default function ProyectosPage() {
   const { projects } = usePublicStore();
   const [selectedCategory, setSelectedCategory] = useState<ProjectCategory>('todos');
 
-  const uniqueCategories = ['todos', ...Array.from(new Set(projects.map(project => project.type)))].sort();
+  const uniqueCategories = [...Array.from(new Set(projects.map(project => project.type)))].sort();
 
   const filteredProjects = selectedCategory === 'todos'
     ? projects
@@ -34,6 +34,12 @@ export default function ProyectosPage() {
             onChange={(e) => setSelectedCategory(e.target.value as ProjectCategory | 'todos')}
             className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none cursor-pointer"
           >
+              <option
+                value="todos"
+                className="bg-gray-800 text-white py-2"
+              >
+                Todos los proyectos
+              </option>
             {uniqueCategories.map(category => (
               <option
                 key={category}
