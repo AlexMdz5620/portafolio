@@ -1,11 +1,17 @@
 import { Project } from '@/schemas/projectSchema';
 import Image from 'next/image';
+import { Button } from '../ui/button';
+import { Eye } from 'lucide-react';
+import { Dispatch, SetStateAction } from 'react';
 
 interface ProjectCardProps {
     project: Project;
+    setIsDialogOpen: () => void;
+    setProject: Dispatch<SetStateAction<Project | undefined>>
+
 }
 
-export default function ProjectCard({ project }: ProjectCardProps) {
+export default function ProjectCard({ project, setIsDialogOpen, setProject }: ProjectCardProps) {
     if (project) return (
         <div
             key={project.id}
@@ -22,16 +28,21 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                     />
                 }
             </div>
-            <a
-                href={project.demo_url}
-                target="_blank"
-                rel="noopener noreferrer"
-
-            >
-                <p className="text-white text-2xl  transition-colors duration-300 ease-out hover:text-[#ff7f50] text-center my-5">
-                    &lt; {project.title} /&gt;
-                </p>
-            </a>
+            <p className="text-white text-1xl transition-colors duration-300 ease-out text-center mt-5">
+                &lt; {project.title} /&gt;
+            </p>
+            <div className='flex justify-center'>
+                <Button
+                    variant='ghost'
+                    className="text-white text-1xl transition-colors duration-300 ease-out hover:text-[#ff7f50] hover:bg-transparent"
+                    onClick={() => {
+                        setIsDialogOpen();
+                        setProject(project);
+                    }}
+                >
+                    <Eye className='h-4 w-4' />
+                </Button>
+            </div>
         </div>
     );
 }

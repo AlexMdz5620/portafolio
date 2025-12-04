@@ -38,6 +38,7 @@ export class PublicService {
   async getProjects(userId: number) {
     return this.projectRepository.find({
       where: { user: { id: userId } },
+      relations: ['techs'],
     });
   }
 

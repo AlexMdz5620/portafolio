@@ -20,10 +20,10 @@ export class Project {
   @Column({ type: 'varchar', length: 500, nullable: true })
   img_url: string;
 
-  @Column({ type: 'varchar', length: 500 })
+  @Column({ type: 'varchar', length: 500, nullable: true })
   github_url: string;
 
-  @Column({ type: 'varchar', length: 500 })
+  @Column({ type: 'varchar', length: 500, nullable: true })
   demo_url: string;
 
   @Column({ type: 'varchar', length: 60 })

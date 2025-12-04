@@ -2,12 +2,15 @@
 
 import { useState } from 'react';
 import ProjectCard from '@/components/projects/ProjectCard';
-import { ProjectCategory } from '@/schemas/projectSchema';
+import { Project, ProjectCategory } from '@/schemas/projectSchema';
 import { usePublicStore } from '@/store/publicStore';
+import ProjectDialog from '@/components/projects/ProjectDialog';
 
 export default function ProyectosPage() {
   const { projects } = usePublicStore();
   const [selectedCategory, setSelectedCategory] = useState<ProjectCategory>('todos');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [project, setProject] = useState<Project>();
 
   const uniqueCategories = [...Array.from(new Set(projects.map(project => project.type)))].sort();
 
@@ -34,12 +37,12 @@ export default function ProyectosPage() {
             onChange={(e) => setSelectedCategory(e.target.value as ProjectCategory | 'todos')}
             className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none cursor-pointer"
           >
-              <option
-                value="todos"
-                className="bg-gray-800 text-white py-2"
-              >
-                Todos los proyectos
-              </option>
+            <option
+              value="todos"
+              className="bg-gray-800 text-white py-2"
+            >
+              Todos los proyectos
+            </option>
             {uniqueCategories.map(category => (
               <option
                 key={category}
@@ -69,7 +72,14 @@ export default function ProyectosPage() {
       <section className="py-16 bg-[#45567d] px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {filteredProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <div key={`${project.id}Card`}>
+              <ProjectCard
+                key={project.id}
+                project={project}
+                setIsDialogOpen={() => setIsDialogOpen(true)}
+                setProject={setProject}
+              />
+            </div>
           ))}
         </div>
 
@@ -85,6 +95,14 @@ export default function ProyectosPage() {
           </div>
         )}
       </section>
+
+      {project &&
+        <ProjectDialog
+          project={project}
+          isDialogOpen={isDialogOpen}
+          setIsDialogOpen={setIsDialogOpen}
+        />
+      }
     </div>
   );
 }

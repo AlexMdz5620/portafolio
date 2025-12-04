@@ -3,9 +3,14 @@
 import Link from 'next/link';
 import ProjectCard from './projects/ProjectCard';
 import { usePublicStore } from '@/store/publicStore';
+import { useState } from 'react';
+import { Project } from '@/schemas/projectSchema';
+import ProjectDialog from './projects/ProjectDialog';
 
 export default function ProjectsSection() {
     const { projects } = usePublicStore();
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [project, setProject] = useState<Project>();
 
     return (
         <section
@@ -19,7 +24,12 @@ export default function ProjectsSection() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto mb-24 px-4">
                     {projects.filter(project => project.featured === true).map(project => (
-                        <ProjectCard key={project.id} project={project} />
+                        <ProjectCard
+                            key={project.id}
+                            project={project}
+                            setIsDialogOpen={() => setIsDialogOpen(true)}
+                            setProject={setProject}
+                        />
                     ))}
                 </div>
 
@@ -31,6 +41,14 @@ export default function ProjectsSection() {
                     <i className="fas fa-chevron-right ml-2.5 transition-transform duration-300 ease-out group-hover:translate-x-1"></i>
                 </Link>
             </div>
+
+            {project &&
+                <ProjectDialog
+                    project={project}
+                    isDialogOpen={isDialogOpen}
+                    setIsDialogOpen={setIsDialogOpen}
+                />
+            }
         </section>
     );
 }
