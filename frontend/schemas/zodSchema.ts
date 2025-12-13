@@ -20,7 +20,7 @@ export const ErrorResponseSchema = z.object({
 });
 
 /* Contact Form */
-export const contacFormSchema = z.object({
+export const contactFormSchema = z.object({
     name: z.string()
         .nonempty({ message: 'El nombre no puede ir vacío.' }),
     email: z.email({ message: 'El correo electrónico no tiene un formato válido.' })
@@ -31,7 +31,7 @@ export const contacFormSchema = z.object({
         .nonempty({ message: 'El mensaje no puede ir vacío.' }),
 });
 
-export type ContacForm = z.infer<typeof contacFormSchema>;
+export type ContactForm = z.infer<typeof contactFormSchema>;
 
 /* Change Password Form */
 export const ChangePasswordSchema = z.object({

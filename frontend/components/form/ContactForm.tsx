@@ -1,17 +1,20 @@
 'use client';
 
+import { sendEmail } from '@/actions/send-mails.action';
+import type { ContactForm } from '@/schemas/zodSchema';
 import { useState } from 'react';
 import { FaPaperPlane, FaEnvelope, FaUser, FaTag } from 'react-icons/fa';
+import { toast } from 'sonner';
 
 export default function ContactForm() {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<ContactForm>({
         name: '',
         email: '',
         subject: '',
         message: ''
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [validationErrors, setValidationErrors] = useState<Partial<Record<keyof ContactForm, string>>>({});
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -19,46 +22,63 @@ export default function ContactForm() {
             ...prev,
             [name]: value
         }));
+        // Limpiar error del campo al editar
+        if (validationErrors[name as keyof ContactForm]) {
+            setValidationErrors(prev => ({ ...prev, [name]: undefined }));
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setValidationErrors({});
 
         try {
             // Aquí implementarás el envío del formulario
             // Por ahora simulamos una espera
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
+            // await new Promise(resolve => setTimeout(resolve, 2000));
             // Simulación de envío exitoso
-            setSubmitStatus('success');
-            setFormData({ name: '', email: '', subject: '', message: '' });
+            // setFormData({ name: '', email: '', subject: '', message: '' });
+            // toast.success('¡Mensaje enviado con éxito! Te responderé pronto.', { position: 'bottom-right' });
 
-            // Resetear el estado después de 3 segundos
-            setTimeout(() => setSubmitStatus('idle'), 3000);
+            const result = await sendEmail(formData);
+
+            if (result.success) {
+                setFormData({ name: '', email: '', subject: '', message: '' });
+                toast.success(result.message || '¡Mensaje enviado con éxito! Te responderé pronto.',
+                    {
+                        position: 'bottom-right',
+                        duration: 5000
+                    });
+            } else {
+                if (result.errors) {
+                    setValidationErrors(result.errors);
+                    toast.error('Por favor, corrige los errores en el formulario.', {
+                        position: 'bottom-right'
+                    });
+                } else {
+                    toast.error(result.message || 'Hubo un error al enviar el mensaje.', {
+                        position: 'bottom-right'
+                    });
+                }
+            }
         } catch (error) {
-            console.log(error);
-            setSubmitStatus('error');
-            setTimeout(() => setSubmitStatus('idle'), 3000);
+            console.error('Error inesperado:', error);
+            toast.error('Hubo un error al enviar el mensaje. Por favor, intenta nuevamente.', { position: 'bottom-right' });
         } finally {
             setIsSubmitting(false);
         }
     };
+
+    const getError = (field: keyof ContactForm) => {
+        return validationErrors[field] ? (
+            <p className="mt-1 text-red-400 text-sm">{validationErrors[field]}</p>
+        ) : null;
+    };
+
     return (
         <>
-            {submitStatus === 'success' && (
-                <div className="bg-green-500/20 border border-green-500 text-green-300 px-4 py-3 rounded mb-6">
-                    ¡Mensaje enviado con éxito! Te responderé pronto.
-                </div>
-            )}
-
-            {submitStatus === 'error' && (
-                <div className="bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded mb-6">
-                    Hubo un error al enviar el mensaje. Por favor, intenta nuevamente.
-                </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-1">
                 <div>
                     <label htmlFor="name" className="block text-white mb-2">
                         <FaUser className="inline mr-2" /> Nombre Completo
@@ -73,6 +93,7 @@ export default function ContactForm() {
                         className="w-full px-4 py-3 bg-[#45567d] border border-[#303841] rounded-lg text-white placeholder-gray-400 focus:border-[#be3144] focus:outline-none transition-colors"
                         placeholder="Tu nombre completo"
                     />
+                    {getError('name')}
                 </div>
 
                 <div>
@@ -89,6 +110,7 @@ export default function ContactForm() {
                         className="w-full px-4 py-3 bg-[#45567d] border border-[#303841] rounded-lg text-white placeholder-gray-400 focus:border-[#be3144] focus:outline-none transition-colors"
                         placeholder="tu.email@ejemplo.com"
                     />
+                    {getError('email')}
                 </div>
 
                 <div>
@@ -105,6 +127,7 @@ export default function ContactForm() {
                         className="w-full px-4 py-3 bg-[#45567d] border border-[#303841] rounded-lg text-white placeholder-gray-400 focus:border-[#be3144] focus:outline-none transition-colors"
                         placeholder="¿De qué quieres hablar?"
                     />
+                    {getError('subject')}
                 </div>
 
                 <div>
@@ -121,6 +144,7 @@ export default function ContactForm() {
                         className="w-full px-4 py-3 bg-[#45567d] border border-[#303841] rounded-lg text-white placeholder-gray-400 focus:border-[#be3144] focus:outline-none transition-colors resize-none"
                         placeholder="Cuéntame sobre tu proyecto..."
                     />
+                    {getError('message')}
                 </div>
 
                 <button
@@ -140,6 +164,10 @@ export default function ContactForm() {
                         </>
                     )}
                 </button>
+
+                <p className="text-gray-400 text-xs text-center mt-2">
+                    Usamos Resend para enviar emails. Tu mensaje llegará directamente a mi bandeja.
+                </p>
             </form>
         </>
     )
